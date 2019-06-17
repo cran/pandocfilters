@@ -13,10 +13,9 @@ Quoted(x, quote_type = "DoubleQuote")
 valid types are \code{"SingleQuote"} and \code{"DoubleQuote"}}
 }
 \description{
-A constructor of an inline object of type \code{"Quoted"}.
+Constructs an inline object of type \code{"Quoted"}.
 }
 \examples{
 Quoted("some text", quote_type="SingleQuote")
 Quoted("some text", quote_type="DoubleQuote")
 }
-

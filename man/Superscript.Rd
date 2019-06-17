@@ -10,9 +10,8 @@ Superscript(x)
 \item{x}{a inline object or a list of inline objects}
 }
 \description{
-A constructor of an inline object of type \code{"Superscript"}.
+Constructs an inline object of type \code{"Superscript"}.
 }
 \examples{
 Superscript("some text written in superscript")
 }
-

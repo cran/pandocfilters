@@ -11,7 +11,7 @@ DefinitionList(x)
 the values are a list of lists of objects of type \code{"block"}.}
 }
 \description{
-A constructor of a block object of type \code{"DefinitionList"}.
+Constructs a block object of type \code{"DefinitionList"}.
 }
 \details{
 In the pandoc API \url{http://johnmacfarlane.net/BayHac2014/doc/pandoc-types/Text-Pandoc-Definition.html} 
@@ -23,4 +23,3 @@ key <- list(Str("key"))
 value <- list(list(Plain(list(Str("value")))))
 DefinitionList(list(list(key, value), Definition("some key", Plain("some value"))))
 }
-

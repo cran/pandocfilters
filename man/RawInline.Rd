@@ -12,9 +12,8 @@ RawInline(format, x)
 \item{x}{a character string giving the inline}
 }
 \description{
-A constructor of an inline object of type \code{"RawInline"}.
+Constructs an inline object of type \code{"RawInline"}.
 }
 \examples{
 RawInline("latex", "some RawInline")
 }
-

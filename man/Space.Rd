@@ -7,9 +7,8 @@
 Space()
 }
 \description{
-A constructor of an inline object of type \code{"Space"}.
+Constructs an inline object of type \code{"Space"}.
 }
 \examples{
 Space()
 }
-

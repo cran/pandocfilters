@@ -14,9 +14,8 @@ Header(x, level = 1L, attr = Attr())
 \item{attr}{an object of type \code{"Attr"}}
 }
 \description{
-A constructor of a block object of type \code{"Header"}.
+Constructs a block object of type \code{"Header"}.
 }
 \examples{
 Header("My Header")
 }
-

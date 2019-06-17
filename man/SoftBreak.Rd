@@ -7,9 +7,8 @@
 SoftBreak()
 }
 \description{
-A constructor of an inline object of type \code{"SoftBreak"}.
+Constructs an inline object of type \code{"SoftBreak"}.
 }
 \examples{
 SoftBreak()
 }
-

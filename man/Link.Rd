@@ -16,7 +16,7 @@ Link(target, text, title = "", attr = Attr())
 \item{attr}{an optional object of type \code{"Attr"}}
 }
 \description{
-A constructor of an inline object of type \code{"Link"}.
+Constructs an inline object of type \code{"Link"}.
 }
 \details{
 Further Usage examples can be found in the README.
@@ -24,4 +24,3 @@ Further Usage examples can be found in the README.
 \examples{
 Link("https://cran.r-project.org/", "Text_Shown", "some title")
 }
-

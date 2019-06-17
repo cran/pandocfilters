@@ -19,4 +19,3 @@ Objects of class \code{"inline"} can be combined by using the generic
 \examples{
 c(Str("some"), Strong("text"))
 }
-

@@ -12,10 +12,9 @@ Div(blocks, attr = Attr())
 \item{attr}{an object of type \code{"Attr"}}
 }
 \description{
-A constructor of a block object of type \code{"Div"}.
+Constructs a block object of type \code{"Div"}.
 }
 \examples{
 blocks <- Plain("Hello R!")
 Div(blocks)
 }
-

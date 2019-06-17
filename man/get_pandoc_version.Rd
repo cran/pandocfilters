@@ -4,9 +4,14 @@
 \alias{get_pandoc_version}
 \title{Get Pandoc Version}
 \usage{
-get_pandoc_version()
+get_pandoc_version(type = c("numeric", "character"))
+}
+\arguments{
+\item{type}{a character giving the type of the return value.}
 }
 \description{
 Get the version of pandoc.
 }
-
+\examples{
+get_pandoc_version()
+}

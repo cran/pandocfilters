@@ -1,10 +1,11 @@
 Package: pandocfilters
 Title: Pandoc Filters for R
-Version: 0.1-1
+Version: 0.1-3
 Authors@R: c(person("Florian", "Schwendinger", 
                     role = c("aut", "cre"),
                     email = "FlorianSchwendinger@gmx.at"),
-             person("Kurt", "Hornik", role = "aut"))
+             person("Kurt", "Hornik", role = "aut"),
+             person("Andrie", "de Vries", role = "ctb"))
 Description: The document converter 'pandoc' <http://pandoc.org/> is widely used
     in the R community. One feature of 'pandoc' is that it can produce and consume
     JSON-formatted abstract syntax trees (AST). This allows to transform a given
@@ -18,15 +19,18 @@ Description: The document converter 'pandoc' <http://pandoc.org/> is widely used
     (for more information see <http://pandoc.org/>) but is also bound to the same
     limitations as 'pandoc'.
 URL: http://pandoc.org/, https://github.com/jgm/pandocfilters/
-Depends: R (>= 2.15)
-Imports: jsonlite, base
+Depends: R (>= 3.0.0)
+Imports: jsonlite, utils
+Suggests: knitr
+VignetteBuilder: knitr
 SystemRequirements: pandoc (> 1.12)
 License: GPL-3
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2016-04-26 13:44:49 UTC; florian
+Packaged: 2019-06-17 10:53:25 UTC; florian
 Author: Florian Schwendinger [aut, cre],
-  Kurt Hornik [aut]
+  Kurt Hornik [aut],
+  Andrie de Vries [ctb]
 Maintainer: Florian Schwendinger <FlorianSchwendinger@gmx.at>
 Repository: CRAN
-Date/Publication: 2016-04-27 19:51:55
+Date/Publication: 2019-06-17 12:00:03 UTC

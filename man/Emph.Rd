@@ -10,9 +10,8 @@ Emph(x)
 \item{x}{a inline object or a list of inline objects}
 }
 \description{
-A constructor of an inline object of type \code{"Emph"}.
+Constructs an inline object of type \code{"Emph"}.
 }
 \examples{
 Emph("emphasize")
 }
-

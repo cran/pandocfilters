@@ -7,9 +7,8 @@
 LineBreak()
 }
 \description{
-A constructor of an inline object of type \code{"LineBreak"}.
+Constructs an inline object of type \code{"LineBreak"}.
 }
 \examples{
 LineBreak()
 }
-

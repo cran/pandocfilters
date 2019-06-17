@@ -10,7 +10,7 @@ Str(x)
 \item{x}{a character string}
 }
 \description{
-A constructor of an inline object of type \code{"Str"}.
+Constructs an inline object of type \code{"Str"}.
 }
 \details{
 To minimize the amount of unnecessary typing, pandoc filters automatically 
@@ -28,4 +28,3 @@ To minimize the amount of unnecessary typing, pandoc filters automatically
 \examples{
 Str("SomeString")
 }
-

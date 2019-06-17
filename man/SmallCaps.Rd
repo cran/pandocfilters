@@ -10,9 +10,8 @@ SmallCaps(x)
 \item{x}{a inline object or a list of inline objects}
 }
 \description{
-A constructor of an inline object of type \code{"SmallCaps"}.
+Constructs an inline object of type \code{"SmallCaps"}.
 }
 \examples{
 SmallCaps("The latex command for 'small caps' is 'textsc'!")
 }
-

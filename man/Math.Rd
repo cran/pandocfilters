@@ -10,9 +10,8 @@ Math(x)
 \item{x}{a character string}
 }
 \description{
-A constructor of an inline object of type \code{"Math"}.
+Constructs an inline object of type \code{"Math"}.
 }
 \examples{
 Math("3*x^2")
 }
-

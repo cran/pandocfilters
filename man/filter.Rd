@@ -2,7 +2,7 @@
 % Please edit documentation in R/pandocfilters.R
 \name{filter}
 \alias{filter}
-\title{Filter JSON-formatted AST}
+\title{Filter JSON-formatted AST.}
 \usage{
 filter(FUN, ..., input = stdin(), output = stdout())
 }
@@ -11,11 +11,10 @@ filter(FUN, ..., input = stdin(), output = stdout())
 
 \item{...}{optional arguments to \code{FUN}.}
 
-\item{input}{a connection object or a character string from which the JSON-formatted AST is read}
+\item{input}{a connection object or a character string from which the JSON-formatted AST is read.}
 
-\item{output}{a connection object or a character string to which the JSON-formatted AST is written}
+\item{output}{a connection object or a character string to which the JSON-formatted AST is written.}
 }
 \description{
 Apply a filter on the JSON-formatted abstract syntax tree (AST).
 }
-

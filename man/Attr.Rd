@@ -19,4 +19,3 @@ A constructor for pandoc attributes.
 \examples{
 Attr("A", c("B", "C"), list(c("D", "E")))
 }
-

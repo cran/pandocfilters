@@ -12,7 +12,7 @@ OrderedList(lattr, llblocks)
 \item{llblocks}{a list of lists of blocks}
 }
 \description{
-A constructor of a block object of type \code{"OrderedList"}.
+Constructs a block object of type \code{"OrderedList"}.
 }
 \examples{
 ordered_1 <- Plain("A")
@@ -21,4 +21,3 @@ ordered_3 <- list(Plain(list(Str("C"))))
 OrderedList(ListAttributes(), ordered_1)
 OrderedList(ListAttributes(), list(ordered_1, ordered_2, ordered_3))
 }
-

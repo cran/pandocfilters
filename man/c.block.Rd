@@ -20,4 +20,3 @@ Objects of class \code{"block"} can be combined by using the generic
 c(Header( "R Basics" ), Header("What is R?", level=2),
 Plain(c(Emph("R"), Space(), "is a system for ", Strong("statistical computation"))))
 }
-

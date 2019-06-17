@@ -20,4 +20,3 @@ ListAttributes(first_number = 1L, style = "DefaultStyle",
 \description{
 A constructor for pandoc list attributes.
 }
-

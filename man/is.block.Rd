@@ -18,4 +18,3 @@ Tests if an object has the class attribute \code{"block"}.
 \examples{
 is.block(as.block(NULL))
 }
-

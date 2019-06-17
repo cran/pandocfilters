@@ -21,11 +21,10 @@ or a list of lists of pandoc objects of type \code{"TableCell"}}
 \item{caption}{a inline object or a list of inline objects giving the caption}
 }
 \description{
-A constructor of a block object of type \code{"Table"}.
+Constructs a block object of type \code{"Table"}.
 }
 \details{
 Table, with caption, column alignments (required), relative column widths 
          (0 = default), column headers (each a list of blocks), 
          and rows (each a list of lists of blocks)
 }
-

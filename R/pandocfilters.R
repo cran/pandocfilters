@@ -8,26 +8,29 @@
 ## pandoc 1.12 (2013-09-15): 
 ##     various changes
 ##
-pandoc <- new.env()
-pandoc$version <- 1.16
+pandoc <- new.env(parent = emptyenv())
+pandoc$version <- NA_character_
+pandoc$types_version <- NA_character_
+pandoc$path <- "pandoc"
 
 ## Imports
-#' @importFrom "stats" "setNames"
+#' @importFrom stats setNames
+#' @importFrom utils localeToCharset head
+## importFrom base getNamespace
 
 #  -----------------------------------------------------------
 #  Filter
 #  ======
-#' @title Filter JSON-formatted AST
+#' @title Filter JSON-formatted AST.
 #' @description Apply a filter on the JSON-formatted abstract syntax tree (AST).
 #' @param FUN the function to be applied on the AST.
 #' @param ... optional arguments to \code{FUN}.
-#' @param input a connection object or a character string from which the JSON-formatted AST is read
-#' @param output a connection object or a character string to which the JSON-formatted AST is written
+#' @param input a connection object or a character string from which the JSON-formatted AST is read.
+#' @param output a connection object or a character string to which the JSON-formatted AST is written.
 #' @export
 #  -----------------------------------------------------------
 filter <- function(FUN, ..., input = stdin(), output = stdout()) {
     ## read ast (in json format)
-    
     json <- character(0)
     while(length(line <- readLines(input, n=1)) > 0) {
         json <- c(json, as.character(line))
@@ -98,54 +101,71 @@ astrapply <- function(x, FUN, ...) {
 #  document
 #  ========
 #' @title Create a new Document
-#' @description A constructor of an object of type \code{"document"}.
+#' @description Constructs an object of type \code{"document"}.
 #' @details Each document has the following methods:
-#' \itemize{
-#'   \item[] \code{to_json()}
-#'      \itemize{ 
-#'        \item[] \emph{Description}
-#'        \item[] \itemize{ Returns the \code{JSON} representation of the document. } }
-#'   \item[] \code{write(con, format="markdown", writer=pandocfilters_writer)}
-#'      \itemize{ 
-#'        \item[] \emph{Description}
-#'        \item[] \itemize{\item[] Write the JSON-formatted AST to a connection.}
-#'        \item[] \emph{Arguments}
-#'        \item[] \itemize{\item[] \code{con}    \sspace a connection object or a character string to which the document is written  }
-#'        \item[] \itemize{\item[] \code{format} \sspace a character string giving the format (e.g. \code{"latex"}, \code{"html"})  }
-#'        \item[] \itemize{\item[] \code{writer} \sspace an optional writer function, see \link{pandocfilters_writer} }    
-#'        \item[] \emph{Note}
-#'        \item[] \itemize{\item[] Any function with the three arguments \code{x}, \code{con} and \code{format} can be used as writer function.}
+#' \describe{
+#'   \item{}{\code{to_json()}
+#'      \describe{ 
+#'        \item{}{\emph{Description}}
+#'        \item{}{\describe{\item{}{Returns the \code{JSON} representation of the document.}}} 
 #'      }
-#'   \item[] \code{append(x)}
-#'      \itemize{ 
-#'        \item[] \emph{Description}
-#'        \item[] \itemize{\item[] Append a new block to the document.}
-#'        \item[] \emph{Arguments}
-#'        \item[] \itemize{\item[] \code{x} \sspace a block object or list of block objects} }
-#'   \item[] \code{append_plain(x)} \sspace
-#'      \itemize{ \item[] For more information about the arguments see \link{Plain}. }
-#'   \item[] \code{append_para(x)} \sspace
-#'      \itemize{ \item[] For more information about the arguments see \link{Para}.}
-#'   \item[] \code{append_code_block(attr, code)} \sspace
-#'      \itemize{ \item[] For more information about the arguments see \link{CodeBlock}.}
-#'   \item[] \code{append_block_quote(blocks)} \sspace
-#'      \itemize{ \item[] For more information about the arguments see \link{BlockQuote}.}
-#'   \item[] \code{append_ordered_list(lattr, lblocks)} \sspace
-#'      \itemize{ \item[] For more information about the arguments see \link{OrderedList}.}
-#'   \item[] \code{append_bullet_list(lblocks)} \sspace
-#'      \itemize{ \item[] For more information about the arguments see \link{BulletList}.}
-#'   \item[] \code{append_definition_list(x)} \sspace
-#'      \itemize{ \item[] For more information about the arguments see \link{DefinitionList}.}
-#'   \item[] \code{append_header(x, level=1L, attr=Attr())} \sspace
-#'      \itemize{ \item[] For more information about the arguments see \link{Header}.}
-#'   \item[] \code{append_horizontal_rule()} \sspace
-#'      \itemize{ \item[] For more information about the arguments see \link{HorizontalRule}.}
-#'   \item[] \code{append_table(rows, col_names=NULL, aligns=NULL, col_width=NULL, caption=list())} \sspace
-#'      \itemize{ \item[] For more information about the arguments see \link{Table}.}
-#'   \item[] \code{append_div(blocks, attr)} \sspace
-#'      \itemize{ \item[] For more information about the arguments see \link{Div}.}
-#'   \item[] \code{append_null()} \sspace
-#'      \itemize{ \item[] For more information about the arguments see \link{Null}.}
+#'   }
+#'   \item{}{\code{write(con, format="markdown", writer=write.pandoc)}
+#'      \describe{
+#'        \item{}{\emph{Description}}
+#'        \item{}{\describe{\item{}{Write the JSON-formatted AST to a connection.}}}
+#'        \item{}{\emph{Arguments}}
+#'        \item{}{\describe{\item{}{\code{con}    \sspace a connection object or a character string to which the document is written  }}}
+#'        \item{}{\describe{\item{}{\code{format} \sspace a character string giving the format (e.g. \code{"latex"}, \code{"html"})  }}}
+#'        \item{}{\describe{\item{}{\code{writer} \sspace an optional writer function, see \link{write.pandoc}}}}
+#'        \item{}{\emph{Note}}
+#'        \item{}{\describe{\item{}{Any function with the three arguments \code{x}, \code{con} and \code{format} can be used as writer function.}}}
+#'      }
+#'   }
+#'   \item{}{\code{append(x)}
+#'      \describe{ 
+#'        \item{}{\emph{Description}}
+#'        \item{}{\describe{\item{}{Append a new block to the document.}}}
+#'        \item{}{\emph{Arguments}}
+#'        \item{}{\describe{\item{}{\code{x} \sspace a block object or list of block objects}}}
+#'      }
+#'   }
+#'   \item{}{\code{append_plain(x)} \sspace
+#'      \describe{\item{}{For more information about the arguments see \link{Plain}. }}
+#'   }
+#'   \item{}{\code{append_para(x)} \sspace
+#'      \describe{\item{}{For more information about the arguments see \link{Para}.}}
+#'   }
+#'   \item{}{\code{append_code_block(attr, code)} \sspace
+#'      \describe{\item{}{For more information about the arguments see \link{CodeBlock}.}}
+#'   }
+#'   \item{}{\code{append_block_quote(blocks)} \sspace
+#'      \describe{\item{}{For more information about the arguments see \link{BlockQuote}.}}
+#'   }
+#'   \item{}{\code{append_ordered_list(lattr, lblocks)} \sspace
+#'      \describe{\item{}{For more information about the arguments see \link{OrderedList}.}}
+#'   }
+#'   \item{}{\code{append_bullet_list(lblocks)} \sspace
+#'      \describe{\item{}{For more information about the arguments see \link{BulletList}.}}
+#'   }
+#'   \item{}{\code{append_definition_list(x)} \sspace
+#'      \describe{\item{}{For more information about the arguments see \link{DefinitionList}.}}
+#'   }
+#'   \item{}{\code{append_header(x, level=1L, attr=Attr())} \sspace
+#'      \describe{\item{}{For more information about the arguments see \link{Header}.}}
+#'   }
+#'   \item{}{\code{append_horizontal_rule()} \sspace
+#'      \describe{\item{}{For more information about the arguments see \link{HorizontalRule}.}}
+#'   }
+#'   \item{}{\code{append_table(rows, col_names=NULL, aligns=NULL, col_width=NULL, caption=list())} \sspace
+#'      \describe{\item{}{For more information about the arguments see \link{Table}.}}
+#'   }
+#'   \item{}{\code{append_div(blocks, attr)} \sspace
+#'      \describe{\item{}{For more information about the arguments see \link{Div}.}}
+#'   }
+#'   \item{}{\code{append_null()} \sspace
+#'      \describe{\item{}{For more information about the arguments see \link{Null}.}}
+#'   }
 #' }
 #' @export
 #  -----------------------------------------------------------
@@ -226,7 +246,7 @@ document <- function() {
         return( jsonlite::toJSON(d, auto_unbox=TRUE) )
     }
     ## Write
-    env$write <- function(con, format="markdown", writer=pandocfilters_writer) {
+    env$write <- function(con, format="markdown", writer=write.pandoc) {
         self <- parent.env(environment())$env
         writer(self$to_json(), con, format)
     }
@@ -267,7 +287,7 @@ as.inline.inline <- identity
 ##' @noRd
 ##' @export
 as.inline.character <- function( x ) {
-    Str(paste(x, collapse=" "))
+    Str(paste(x, collapse = " "))
 }
 
 ##' @noRd
@@ -322,23 +342,23 @@ c.inline <- function(...) {
 as.loio <- function( x ) UseMethod( "as.loio" )
 
 ##' @noRd
-##' @S3method as.loio loio
+##' @export
 as.loio.loio <- identity
 
 ##' @noRd
-##' @S3method as.loio NULL
+##' @export
 as.loio.NULL <- function( x ) structure(list(), class=c("loio", "list"))
 
 ##' @noRd
-##' @S3method as.loio inline
+##' @export
 as.loio.inline <- function( x ) structure(list(x), class=c("loio", "list"))
 
 ##' @noRd
-##' @S3method as.loio character
+##' @export
 as.loio.character <- function( x ) structure(list(as.inline(x)), class=c("loio", "list"))
 
 ##' @noRd
-##' @S3method as.loio list
+##' @export
 as.loio.list <- function( x ) {
     x <- lapply(x, as.inline)
     structure(x, class=c("loio", "list"))
@@ -416,24 +436,24 @@ c.block <- function(...) {
 }
 
 ## -----------------------------------------------------------
-##  lobo (List of Block Objects)
-##  ============================
+## lobo (List of Block Objects)
+## ============================
 as.lobo <- function( x ) UseMethod( "as.lobo" )
 
 ##' @noRd
-##' @S3method as.lobo lobo
+##' @export
 as.lobo.lobo <- identity
 
 ##' @noRd
-##' @S3method as.lobo NULL
+##' @export
 as.lobo.NULL <- function( x ) structure(list(), class=c("lobo", "list"))
 
 ##' @noRd
-##' @S3method as.lobo block
+##' @export
 as.lobo.block <- function( x ) structure(list(x), class=c("lobo", "list"))
 
 ##' @noRd
-##' @S3method as.lobo list
+##' @export
 as.lobo.list <- function( x ) {
     b <- sapply(x, is.block)
     if ( !all(b) ) {
@@ -452,23 +472,23 @@ is.lobo <- function(x) class(x)[1] == "lobo"
 as.lolobo <- function( x ) UseMethod( "as.lolobo" )
 
 ##' @noRd
-##' @S3method as.lolobo lolobo
+##' @export
 as.lolobo.lolobo <- identity
 
 ##' @noRd
-##' @S3method as.lolobo NULL
+##' @export
 as.lolobo.NULL  <- function( x ) structure(list(as.lobo(x)), class=c("lolobo", "lobo", "list"))
 
 ##' @noRd
-##' @S3method as.lolobo block
+##' @export
 as.lolobo.block <- function( x ) structure(list(as.lobo(x)), class=c("lolobo", "lobo", "list"))
 
 ##' @noRd
-##' @S3method as.lolobo lobo
+##' @export
 as.lolobo.lobo  <- function( x ) structure(list(x), class=c("lolobo", "lobo", "list"))
 
 ##' @noRd
-##' @S3method as.lolobo list
+##' @export
 as.lolobo.list  <- function( x ) {
     structure(lapply(x, as.lobo), class=c("lolobo", "lobo", "list"))
 }
@@ -477,7 +497,7 @@ as.lolobo.list  <- function( x ) {
 #  Citation
 #  ========
 #' @title Citation
-#' @description A constructor of an object of type \code{"Citation"}.
+#' @description Constructs an object of type \code{"Citation"}.
 #' @param suffix a inline object or list of inline objects
 #' @param id a character string (not visible in the text)
 #' @param note_num an integer 
@@ -545,7 +565,8 @@ Attr <- function(identifier="", classes=character(), key_val_pairs=list()) {
 #' @export
 ## ListAttributes = (Int, ListNumberStyle, ListNumberDelim) 
 ListAttributes <- function(first_number=1L, style="DefaultStyle", delim="DefaultDelim") {
-    structure(list(first_number, list(t=style, c=list()), list(t=delim, c=list())), class=c("ListAttributes", "list"))
+    structure(list(first_number, list(t=style, c=list()), list(t=delim, c=list())), 
+              class = c("ListAttributes", "list"))
 }
 
 #  -----------------------------------------------------------
@@ -591,7 +612,7 @@ TableCell <- function(x) structure(list(Plain(list(Str(x)))), class=c("TableCell
 #   1. Str
 #   ======
 #' @title Text (String)
-#' @description A constructor of an inline object of type \code{"Str"}.
+#' @description Constructs an inline object of type \code{"Str"}.
 #' @param x a character string
 #' @details 
 #'   To minimize the amount of unnecessary typing, pandoc filters automatically 
@@ -617,7 +638,7 @@ Str <- function(x) {
 #  2. Emph
 #  =======
 #' @title Emphasized Text
-#' @description A constructor of an inline object of type \code{"Emph"}.
+#' @description Constructs an inline object of type \code{"Emph"}.
 #' @param x a inline object or a list of inline objects
 #' @examples
 #' Emph("emphasize")
@@ -631,7 +652,7 @@ Emph <- function(x) {
 #  3. Strong
 #  =========
 #' @title Strongly Emphasized Text
-#' @description A constructor of an inline object of type \code{"Strong"}.
+#' @description Constructs an inline object of type \code{"Strong"}.
 #' @param x a inline object or a list of inline objects
 #' @examples
 #' Strong("strong")
@@ -645,7 +666,7 @@ Strong <- function(x) {
 #  4. Strikeout
 #  ============
 #' @title Strikeout Text
-#' @description A constructor of an inline object of type \code{"Strikeout"}.
+#' @description Constructs an inline object of type \code{"Strikeout"}.
 #' @param x a inline object or a list of inline objects
 #' @examples
 #' Strikeout("strikeout")
@@ -659,7 +680,7 @@ Strikeout <- function(x) {
 #  5. Superscript
 #  ==============
 #' @title Superscripted Text
-#' @description A constructor of an inline object of type \code{"Superscript"}.
+#' @description Constructs an inline object of type \code{"Superscript"}.
 #' @param x a inline object or a list of inline objects
 #' @examples
 #' Superscript("some text written in superscript")
@@ -673,7 +694,7 @@ Superscript <- function(x) {
 #  6. Subscript
 #  ============
 #' @title Subscripted Text
-#' @description A constructor of an inline object of type \code{"Subscript"}.
+#' @description Constructs an inline object of type \code{"Subscript"}.
 #' @param x a inline object or a list of inline objects
 #' @examples
 #' Subscript("some text written in superscript")
@@ -687,7 +708,7 @@ Subscript <- function(x) {
 #  7. SmallCaps
 #  ============
 #' @title Small Caps Text
-#' @description A constructor of an inline object of type \code{"SmallCaps"}.
+#' @description Constructs an inline object of type \code{"SmallCaps"}.
 #' @param x a inline object or a list of inline objects
 #' @examples 
 #' SmallCaps("The latex command for 'small caps' is 'textsc'!")
@@ -701,7 +722,7 @@ SmallCaps <- function(x) {
 #  8. Quoted
 #  =========
 #' @title Quoted Text
-#' @description A constructor of an inline object of type \code{"Quoted"}.
+#' @description Constructs an inline object of type \code{"Quoted"}.
 #' @param x a inline object or a list of inline objects
 #' @param quote_type a character giving the quote type,
 #'                   valid types are \code{"SingleQuote"} and \code{"DoubleQuote"}
@@ -721,7 +742,7 @@ Quoted <- function(x, quote_type="DoubleQuote") {
 #  9. Cite
 #  =======
 #' @title Citation
-#' @description A constructor of an inline object of type \code{"Cite"}.
+#' @description Constructs an inline object of type \code{"Cite"}.
 #' @param citation an object of type \code{"Citation"}
 #' @param x a inline object or a list of inline objects
 #' @examples
@@ -741,7 +762,7 @@ Cite <- function(citation, x) {
 #  10. Code
 #  ========
 #' @title Inline Code 
-#' @description A constructor of an inline object of type \code{"Code"}.
+#' @description Constructs an inline object of type \code{"Code"}.
 #' @param code a character string giving the inline code
 #' @param name an optional character string giving the name of the inline code chunk
 #' @param language an optional character string giving the programming language
@@ -788,7 +809,7 @@ Code <- function(code, name="", language=NULL, line_numbers=FALSE, start_from=1)
 #  11. Space
 #  =========
 #' @title Inter-word space
-#' @description A constructor of an inline object of type \code{"Space"}.
+#' @description Constructs an inline object of type \code{"Space"}.
 #' @examples
 #' Space()
 #' @export
@@ -803,7 +824,7 @@ Space <- function() structure(Type("Space"), class=c("inline", "list"))
 #        I couldn't figure out what it actually does.
 #
 #' @title Soft Line Break
-#' @description A constructor of an inline object of type \code{"SoftBreak"}.
+#' @description Constructs an inline object of type \code{"SoftBreak"}.
 #' @examples
 #' SoftBreak()
 #' @export
@@ -814,7 +835,7 @@ SoftBreak <- function() structure(Type("SoftBreak"), class=c("inline", "list"))
 #  13. LineBreak
 #  =============
 #' @title Hard Line Break
-#' @description A constructor of an inline object of type \code{"LineBreak"}.
+#' @description Constructs an inline object of type \code{"LineBreak"}.
 #' @examples
 #' LineBreak()
 #' @export
@@ -825,7 +846,7 @@ LineBreak <- function() structure(Type("LineBreak"), class=c("inline", "list"))
 #  14. Math
 #  ========
 #' @title TeX Math
-#' @description A constructor of an inline object of type \code{"Math"}.
+#' @description Constructs an inline object of type \code{"Math"}.
 #' @param x a character string 
 #' @examples
 #' Math("3*x^2")
@@ -837,7 +858,7 @@ Math <- function(x) structure(list(t="Math", c=list(Type("InlineMath"), x)), cla
 #  15. RawInline
 #  =============
 #' @title Raw Inline
-#' @description A constructor of an inline object of type \code{"RawInline"}.
+#' @description Constructs an inline object of type \code{"RawInline"}.
 #' @param format a character string giving the format (e.g. \code{"latex"}, \code{"html"})
 #' @param x a character string giving the inline
 #' @examples
@@ -852,7 +873,7 @@ RawInline <- function(format, x) {
 #  16. Link
 #  ========
 #' @title Hyperlink
-#' @description A constructor of an inline object of type \code{"Link"}.
+#' @description Constructs an inline object of type \code{"Link"}.
 #' @param target a character string giving the target (hyper reference)
 #' @param text a inline object or a list of inline objects giving the visible part
 #' @param title an optional character string giving the title
@@ -875,6 +896,7 @@ Link <- function(target, text, title="", attr=Attr()) {
                                     list(target, title))), 
               class=c("inline", "list"))
 }
+
 ## Link <- function(target, text, alt_text="") {
 ##     structure(list(t="Link", c=list(as.loio(text), list(target, alt_text))), 
 ##         class=c("inline", "list"))
@@ -884,7 +906,7 @@ Link <- function(target, text, title="", attr=Attr()) {
 #  17. Image
 #  =========
 #' @title Image
-#' @description A constructor of an inline object of type \code{"Image"}.
+#' @description Constructs an inline object of type \code{"Image"}.
 #' @param target a character string giving the target (hyper reference)
 #' @param text a inline object or a list of inline objects giving the visible part
 #' @param caption a character string describing the picture
@@ -906,6 +928,7 @@ Image <- function(target, text, caption="", attr=Attr()) {
                                      list(target, caption))), 
               class=c("inline", "list"))
 }
+
 ## Image <- function(target, text, caption="") {
 ##     structure(list(t="Image", c=list(as.loio(text), list(target, caption))), 
 ##         class=c("inline", "list"))
@@ -916,7 +939,7 @@ Image <- function(target, text, caption="", attr=Attr()) {
 #  18. Note
 #  ========
 #' @title Note
-#' @description A constructor of an inline object of type \code{"Note"}.
+#' @description Constructs an inline object of type \code{"Note"}.
 #' @param x a pandoc block object or a list of pandoc block objects
 #' @examples
 #' block <- Plain("x")
@@ -933,7 +956,7 @@ Note <- function(x) {
 #  19. Span
 #  ========
 #' @title Generic Inline Container with Attributes
-#' @description A constructor of an inline object of type \code{"Span"}.
+#' @description Constructs an inline object of type \code{"Span"}.
 #' @param attr an object of type \code{"Attr"}
 #' @param inline a inline object or a list of inline objects which will be shown
 #' @examples
@@ -967,40 +990,39 @@ Span <- function(attr, inline) {
 
 ## NOTE:
 
+Block <- function(t, c) {
+    structure(list(t = t, c = c), class = c("block", "list"))
+}
 
 #  -----------------------------------------------------------
 #  1. Plain
 #  ========
 #' @title Plain Text
-#' @description A constructor of a block object of type \code{"Plain"}.
+#' @description Constructs a block object of type \code{"Plain"}, a plain paragraph.
 #' @param x a inline object or list of inline objects
 #' @examples
 #' Plain("x")
 #' @export
 #  -----------------------------------------------------------
-Plain <- function(x) {
-    structure(list(t="Plain", c=as.loio(x)), class=c("block", "list"))
-}
+Plain <- function(x) Block(t = "Plain", c = as.loio(x))
 
 #  -----------------------------------------------------------
 #  2. Para
 #  =======
 #' @title Paragraph
-#' @description A constructor of a block object of type \code{"Para"}.
+#' @description Constructs a block object of type \code{"Para"}.
 #' @param x a inline object or list of inline objects
 #' @examples
 #' Para("x")
 #' @export
 #  -----------------------------------------------------------
-Para <- function(x) {
-    structure(list(t="Para", c=as.loio(x)), class=c("block", "list"))
-}
+Para <- function(x) Block(t = "Para", c = as.loio(x))
 
 #  -----------------------------------------------------------
 #  3. CodeBlock
 #  ============
 #' @title Code Block
-#' @description A constructor of a block object of type \code{"CodeBlock"}.
+#' @description Constructs a block object of type \code{"CodeBlock"}.
 #' @param attr an object of type \code{"Attr"}
 #' @param code a character string containing the source code.
 #' @examples
@@ -1010,9 +1032,7 @@ Para <- function(x) {
 #' @export
 ## Attr String
 #  -----------------------------------------------------------
-CodeBlock <- function(attr, code) {
-    structure(list(t="CodeBlock", c=list(attr, code)), class=c("block", "list"))
-}
+CodeBlock <- function(attr, code) Block(t = "CodeBlock", c = list(attr, code))
 
 #  -----------------------------------------------------------
 #  4. RawBlock
@@ -1024,22 +1044,20 @@ CodeBlock <- function(attr, code) {
 #  5. BlockQuote
 #  =============
 #' @title Block Quote
-#' @description A constructor of a block object of type \code{"BlockQuote"}.
+#' @description Constructs a block object of type \code{"BlockQuote"}.
 #' @param blocks a block object or list of block objects
 #' @examples
 #' BlockQuote(Plain("Hello R!"))
 #' @export
 ## Attr String
 #  -----------------------------------------------------------
-BlockQuote <- function(blocks) {
-    structure(list(t="BlockQuote", c=as.lobo(blocks)), class=c("block", "list"))
-}
+BlockQuote <- function(blocks) Block(t = "BlockQuote", c = as.lobo(blocks))
 
 #  -----------------------------------------------------------
 #  6. OrderedList
 #  ==============
 #' @title Ordered List
-#' @description A constructor of a block object of type \code{"OrderedList"}.
+#' @description Constructs a block object of type \code{"OrderedList"}.
 #' @param lattr a list of attributes
 #' @param llblocks a list of lists of blocks
 #' @examples
@@ -1052,16 +1070,14 @@ BlockQuote <- function(blocks) {
 ## Attr String
 #  -----------------------------------------------------------
 OrderedList <- function(lattr, llblocks) {
-    structure(list(t="OrderedList", c=list(lattr, as.lolobo(llblocks))), class=c("block", "list"))
+    Block(t = "OrderedList", c = list(lattr, as.lolobo(llblocks)))
 }
-
-## attach(getNamespace("pandocfilters"))
 
 #  -----------------------------------------------------------
 #  7. BulletList
 #  =============
 #' @title Bullet List
-#' @description A constructor of a block object of type \code{"BulletList"}.
+#' @description Constructs a block object of type \code{"BulletList"}.
 #' @param llblocks a list of lists of blocks
 #' @examples
 #' bullet_1 <- Plain("A")
@@ -1072,14 +1088,15 @@ OrderedList <- function(lattr, llblocks) {
 ## Attr String
 #  -----------------------------------------------------------
 BulletList <- function(llblocks) {
-    structure(list(t="BulletList", c=as.lolobo(llblocks)), class=c("block", "list"))
+    Block(t = "BulletList", c = as.lolobo(llblocks))
 }
 
 #  -----------------------------------------------------------
 #  8.0 Definition
 #  ==============
 #' @title Definition
-#' @description A constructor of a \code{Definition} which can be used as an element of a \code{"DefinitionList"}.
+#' @description Constructs a \code{Definition} which can be used as 
+#'              an element of a \code{"DefinitionList"}.
 #' @param key a inline object or list of inline objects 
 #' @param value a block object or list of block objects
 #' @examples
@@ -1094,7 +1111,7 @@ Definition <- function(key, value) {
 #  8. DefinitionList
 #  =================
 #' @title Definition List
-#' @description A constructor of a block object of type \code{"DefinitionList"}.
+#' @description Constructs a block object of type \code{"DefinitionList"}.
 #' @param x a list of key value pairs, the key is a list of \code{"inline"} objects and
 #'          the values are a list of lists of objects of type \code{"block"}.
 #' @details In the pandoc API \url{http://johnmacfarlane.net/BayHac2014/doc/pandoc-types/Text-Pandoc-Definition.html} 
@@ -1107,15 +1124,14 @@ Definition <- function(key, value) {
 #' @export
 ## Attr String
 #  -----------------------------------------------------------
-DefinitionList <- function(x) {
-    structure(list(t="DefinitionList", c=x), class=c("block", "list"))
-}
+DefinitionList <- function(x) Block(t = "DefinitionList", c = x)
+
 
 #  -----------------------------------------------------------
 #  9. Header
 #  =========
 #' @title Header
-#' @description A constructor of a block object of type \code{"Header"}.
+#' @description Constructs a block object of type \code{"Header"}.
 #' @param x a inline object or a list of inline objects
 #' @param level an integer giving the level
 #' @param attr an object of type \code{"Attr"}
@@ -1124,28 +1140,28 @@ DefinitionList <- function(x) {
 #' @export
 #  -----------------------------------------------------------
 Header <- function(x, level=1L, attr=Attr()) {
-    structure(list(t="Header", c=list(level, attr, as.loio(x))), class=c("block", "list"))
+    Block(t = "Header", c = list(level, attr, as.loio(x)))
 }
 
 #  -----------------------------------------------------------
 #  10. HorizontalRule
 #  ==================
 #' @title Horizontal Rule
-#' @description A constructor of a block object of type \code{"HorizontalRule"}.
+#' @description Constructs a block object of type \code{"HorizontalRule"}.
 #' @examples
 #' HorizontalRule()
 #' @export
 ## Attr String
 #  -----------------------------------------------------------
 HorizontalRule <- function() {
-    structure(list(t="HorizontalRule", c=list()), class=c("block", "list"))
+    Block(t = "HorizontalRule", c = list())
 }
 
 #  -----------------------------------------------------------
 #  11. Table
 #  =========
 #' @title Table
-#' @description A constructor of a block object of type \code{"Table"}.
+#' @description Constructs a block object of type \code{"Table"}.
 #' @param rows an object of class \code{"matrix"}, \code{"data.frame"}, \code{"table"} 
 #'   or a list of lists of pandoc objects of type \code{"TableCell"}
 #' @param col_names a list of objects of type \code{"TableCell"}
@@ -1218,15 +1234,15 @@ Table <- function(rows, col_names=NULL, aligns=NULL, col_width=NULL, caption=lis
     if ( is.character(caption) ) {
         caption <- Str(caption)
     }
-    structure(list(t="Table", c=list(as.loio(caption), aligns, 
-                   as.list(col_width), col_names, rows)), class=c("block", "list"))
+    Block(t = "Table", 
+          c = list(as.loio(caption), aligns, as.list(col_width), col_names, rows))
 }
 
 #  -----------------------------------------------------------
 #  12. Div
 #  =======
 #' @title Generic Block Container with Attributes
-#' @description A constructor of a block object of type \code{"Div"}.
+#' @description Constructs a block object of type \code{"Div"}.
 #' @param blocks a block object or list of block objects
 #' @param attr an object of type \code{"Attr"}
 #' @examples
@@ -1235,20 +1251,18 @@ Table <- function(rows, col_names=NULL, aligns=NULL, col_width=NULL, caption=lis
 #' @export
 ## Attr String
 #  -----------------------------------------------------------
-Div <- function(blocks, attr=Attr()) {
-    structure(list(t="Div", c=list(attr, as.lobo(blocks))), class=c("block", "list"))
-}
+Div <- function(blocks, attr=Attr()) Block(t = "Div", c = list(attr, as.lobo(blocks)))
 
 #  -----------------------------------------------------------
 #  13. Null
 #  ========
 #' @title Nothing
-#' @description A constructor of a block object of type \code{"Null"}.
+#' @description Constructs a block object of type \code{"Null"}.
 #' @examples
 #' Null()
 #' @export
 #  -----------------------------------------------------------
-Null <- function() structure(list(t="Null", c=list()), class=c("block", "list"))
+Null <- function() Block(t = "Null", c = list())
 
 ##' @noRd
 ##' @export

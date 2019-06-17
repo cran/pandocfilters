@@ -10,7 +10,7 @@ BulletList(llblocks)
 \item{llblocks}{a list of lists of blocks}
 }
 \description{
-A constructor of a block object of type \code{"BulletList"}.
+Constructs a block object of type \code{"BulletList"}.
 }
 \examples{
 bullet_1 <- Plain("A")
@@ -18,4 +18,3 @@ bullet_2 <- Plain(Str("B"))
 bullet_3 <- list(Plain(list(Str("C"))))
 BulletList(list(bullet_1, bullet_2, bullet_3))
 }
-

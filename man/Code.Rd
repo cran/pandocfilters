@@ -19,10 +19,9 @@ Code(code, name = "", language = NULL, line_numbers = FALSE,
 \item{start_from}{an integer giving the first line number}
 }
 \description{
-A constructor of an inline object of type \code{"Code"}.
+Constructs an inline object of type \code{"Code"}.
 }
 \examples{
 Code("lm(hello ~ world)", "my_r_inline_code", "R", TRUE, 0)
 Code("lm(hello ~ world)")
 }
-

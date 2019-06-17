@@ -22,4 +22,3 @@ In pandoc \code{"block"} objects are used as container for
 as.block("some text")
 as.block(NULL)
 }
-

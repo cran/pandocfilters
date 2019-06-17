@@ -22,6 +22,5 @@ Citation(suffix, id, note_num = 0L, mode = "AuthorInText",
 \item{hash}{an integer}
 }
 \description{
-A constructor of an object of type \code{"Citation"}.
+Constructs an object of type \code{"Citation"}.
 }
-

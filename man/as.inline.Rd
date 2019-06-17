@@ -20,4 +20,3 @@ Objects of the classes \code{"NULL"} and \code{"character"}
 as.inline("some text")
 as.inline(NULL)
 }
-

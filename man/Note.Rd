@@ -10,10 +10,9 @@ Note(x)
 \item{x}{a pandoc block object or a list of pandoc block objects}
 }
 \description{
-A constructor of an inline object of type \code{"Note"}.
+Constructs an inline object of type \code{"Note"}.
 }
 \examples{
 block <- Plain("x")
 Note(block)
 }
-

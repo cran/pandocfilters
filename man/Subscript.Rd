@@ -10,9 +10,8 @@ Subscript(x)
 \item{x}{a inline object or a list of inline objects}
 }
 \description{
-A constructor of an inline object of type \code{"Subscript"}.
+Constructs an inline object of type \code{"Subscript"}.
 }
 \examples{
 Subscript("some text written in superscript")
 }
-

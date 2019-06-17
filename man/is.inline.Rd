@@ -18,4 +18,3 @@ Tests if an object has the class attribute \code{"inline"}.
 \examples{
 is.inline(as.inline(NULL))
 }
-

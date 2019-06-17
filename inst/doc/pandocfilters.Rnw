@@ -1,0 +1,282 @@
+%\VignetteIndexEntry{Introduction to the pandocfilters Package}
+%\VignetteEncoding{UTF-8}
+%\VignettePackage{pandocfilters}
+%\VignetteEngine{knitr::knitr}
+
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[colorlinks=true, citecolor=blue, linkcolor=red, urlcolor=red]{hyperref}
+\usepackage[round]{natbib}
+\usepackage{amsmath,amsfonts,amsthm,enumerate,bm}
+\usepackage{verbatim}
+\usepackage[left=2.8cm, right=2.8cm]{geometry}
+
+\setlength{\parindent}{0pt}
+
+\newcommand{\pkg}[1]{\textbf{#1}}
+\newcommand{\proglang}[1]{\textsf{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+
+\title{Introduction to the \pkg{pandocfilters} Package}
+
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(tidy=FALSE, fig.width=8, fig.height=4)
+opts_knit$set(out.format = "latex")
+theme_options <- knit_theme$get("edit-emacs")
+theme_options$background = "#f4f3ef"; 
+knit_theme$set(theme_options)
+@
+
+\setkeys{Gin}{width=\textwidth}
+
+<<echo=FALSE, results='hide'>>=
+options(width=65, prompt = "R> ", continue = "+  ", useFancyQuotes = FALSE)
+@ 
+
+\begin{document}
+\sloppy
+\maketitle
+
+<<pandocfilters>>=
+library("pandocfilters")
+@
+
+The document converter \href{https://pandoc.org/}{pandoc} is widely used
+in the R community. One feature of pandoc is that it can produce and consume
+JSON-formatted abstract syntax trees (AST). This allows to transform a given
+source document into JSON-formatted AST, alter it by so called filters and pass
+the altered JSON-formatted AST back to pandoc. This package provides functions
+which allow to write such filters in native R code. The package is inspired by
+the Python package \href{https://github.com/jgm/pandocfilters/}{pandocfilters}.
+
+To alter the AST, the JSON representations of the data structures building the AST
+have to be replicated. For this purpose, \pkg{pandocfilters} provides a set of 
+constructors, with the goal to ease building / altering the AST.
+
+\section{Installation}
+Detailed information about installing pandoc, can be found at 
+\url{http://pandoc.org/installing.html}.
+For the new pandoc \href{https://github.com/jgm/pandoc/releases}{releases}
+there exist precompiled pandoc versions for \proglang{Linux}, \proglang{Windows}
+and \proglang{macOS}.
+
+\section{Setup}
+If \pkg{pandoc} is set as PATH variable
+<<pandoc_version>>=
+system2("pandoc", "--version", stdout = TRUE, stderr = TRUE)
+@
+
+should show the version and some additional information.
+
+\subsection{Alter the pandoc version}
+There are several options to alter the pandoc version used by 
+\pkg{pandocfilters},
+\begin{enumerate}
+    \item alter your PATH variable accordingly
+    \item set the system variable \code{"PANDOC\_HOME"}
+    \item use \code{set\_pandoc\_path} after \pkg{pandocfilters} is loaded
+\end{enumerate}
+
+\subsubsection{Set the system variable \code{"PANDOC\_HOME"}}
+To set persistent environment variables either the file \code{".Renviron"}
+or the file \code{".Rprofile"} can be used. More information about
+\code{".Rprofile"} and \code{".Renviron"} can be found in the
+\href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/Startup.html}{R-Documentation}.
+Therefore a \code{".Renviron"} file on \proglang{Unix} could look like the following
+\begin{verbatim}
+PANDOC_HOME=/home/florian/bin/pandoc/pandoc_211/bin/pandoc
+\end{verbatim}
+or on \proglang{Windows}
+\begin{verbatim}
+PANDOC_HOME=C:/Users/Florian/AppData/Local/Pandoc/pandoc.exe
+\end{verbatim}
+similarly a \code{".Rprofile"} file on \proglang{Unix} could look like the following
+<<rprofile_unix, eval=FALSE>>=
+Sys.setenv(PANDOC_HOME="/home/florian/bin/pandoc/pandoc_221/bin/pandoc")
+@
+or on \proglang{Windows}
+<<rprofile_win, eval=FALSE>>=
+Sys.setenv(PANDOC_HOME="C:/Users/Florian/AppData/Local/Pandoc/pandoc.exe")
+@
+
+\subsubsection{Use \code{set\_pandoc\_path}}
+After pandoc is loaded the used version can be altered by \code{set\_pandoc\_path}.
+%% replace this by the tex code to pass on winbuilder
+%%<<alter_pandoc_version>>=
+%%get_pandoc_version()
+%%set_pandoc_path("/home/florian/bin/pandoc/pandoc_221/bin/pandoc")
+%%get_pandoc_version()
+%%@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{get_pandoc_version}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## [1] 2.2
+\end{verbatim}
+\begin{alltt}
+\hlkwd{set_pandoc_path}\hlstd{(}\hlstr{"/home/florian/bin/pandoc/pandoc_221/bin/pandoc"}\hlstd{)}
+\hlkwd{get_pandoc_version}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## [1] 2.2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\section{Constructors}
+As mentioned before, constructors are used to replicate the pandoc AST in R.
+For this purpose, pandoc provides two basic types, \textbf{inline} elements and 
+\textbf{block} elements. An extensive list can be found below. \\
+
+To minimize the amount of unnecessary typing \pkg{pandocfilters} automatically 
+converts character strings to pandoc objects of type \code{"Str"} if needed.
+Furthermore, if a single inline object is provided where a list of inline 
+objects is needed \pkg{pandocfilters} automatically converts this inline 
+object into a list of inline objects. \\
+
+For example, the canonical way to emphasize the character string 
+\code{"some text"} would be 
+<<eval=FALSE>>=
+Emph(list(Str("some text")))
+@
+
+Since single inline objects are automatically transformed to lists of inline 
+objects, this is equivalent to 
+<<eval=FALSE>>=
+Emph(Str("some text"))
+@
+
+Since a character  string is automatically transformed to an inline object, 
+this is equivalent to 
+<<eval=FALSE>>=
+Emph("some text")
+@
+
+In short, whenever a list of inline objects is needed one can also use a 
+single inline object or a character string, and therefore the following 
+three code lines are equivalent.   
+
+<<eval=FALSE>>=
+Emph(list(Str("some text")))
+Emph(Str("some text"))
+Emph("some text")
+@
+
+\subsection{Inline Elements}
+\begin{enumerate}
+    \item \code{Str(x)}
+    \item \code{Emph(x)}
+    \item \code{Strong(x)}
+    \item \code{Strikeout(x)}
+    \item \code{Superscript(x)}
+    \item \code{Subscript(x)}
+    \item \code{SmallCaps(x)}
+    \item \code{Quoted(x, quote\_type)}
+    \item \code{Cite(citation, x)}
+    \item \code{Code(code, name, language, line\_numbers, start\_from)}
+    \item \code{Space()}
+    \item \code{SoftBreak()}
+    \item \code{LineBreak()}
+    \item \code{Math(x)}
+    \item \code{RawInline(format, x)}
+    \item \code{Link(target, text, title, attr)}
+    \item \code{Image(target, text, caption, attr)}
+    \item \code{Span(attr, inline)}
+\end{enumerate}
+
+\subsection{Block Elements}
+\begin{enumerate}
+    \item \code{Plain(x)}
+    \item \code{Para(x)}
+    \item \code{CodeBlock(attr, code)}
+    \item \code{BlockQuote(blocks)}
+    \item \code{OrderedList(lattr, lblocks)}
+    \item \code{BulletList(lblocks)}
+    \item \code{DefinitionList(x)}
+    \item \code{Header(x, level, attr)}
+    \item \code{HorizontalRule()}
+    \item \code{Table(rows, col\_names, aligns, col\_width, caption)}
+    \item \code{Div(blocks, attr)}
+    \item \code{Null()}
+\end{enumerate}
+
+\subsection{Argument Constructors}
+\begin{enumerate}
+    \item \code{Attr(identifier, classes, key\_val\_pairs)}
+    \item \code{Citation(suffix, id, note\_num, mode, prefix, hash)}
+    \item \code{TableCell(x)}
+\end{enumerate}
+ 
+\newpage
+
+\section{Altering the AST}
+To read / write / alter the AST the following functions can be used.
+
+<<echo=FALSE, results='hide'>>=
+class(pandoc_to_json) <- c("pfun", class(pandoc_to_json))
+class(pandoc_from_json) <- c("pfun", class(pandoc_from_json))
+class(filter) <- c("pfun", class(filter))
+print.pfun <- function(x) writeLines(head(deparse(args(x)), 1))
+@
+
+<<functions>>=
+pandoc_to_json
+pandoc_from_json
+filter
+@
+
+\subsection{Examples}
+\subsubsection{Lower Case}
+
+In this example we take the first few lines from the 
+\href{https://cran.r-project.org/doc/FAQ/R-FAQ}{R-FAQ} Section ``\code{2.1 What is R?}''
+stored in the a markdown file \code{"lowe\_case.md"}
+<<read_ex1, cache = FALSE>>=
+ex1_file <- system.file(package = "pandocfilters", 
+                        "examples", "lower_case.md")
+readLines(ex1_file)
+@
+
+and use \pkg{pandocfilters} to obtain the AST representation of this document.
+Since pandoc filters are typically used in the terminal the default
+input is the \code{stdin} and the default output is \code{stdout},
+however to stay within \proglang{R} we will use text connections
+instead. 
+
+First we setup a read connection for the input and a write connection
+for the output.
+<<ex1_setup_text_connections>>=
+icon <- textConnection(pandoc_to_json(ex1_file))
+ocon <- textConnection("modified_ast", open = "w")
+@
+
+Second we define a function to alter the AST
+<<lower_function>>=
+lower <- function(key, value, ...) {
+    if (key == "Str") Str(tolower(value)) else NULL
+}
+@
+
+and apply it on the AST.
+<<ex1_filter>>=
+filter(lower, input = icon, output = ocon)
+@
+
+At the end we convert altered AST back to markdown
+<<ex1_from_json>>=
+pandoc_from_json(modified_ast, to ="markdown")
+@
+
+and close the open connections.
+<<ex1_close_connnections>>=
+close(icon)
+close(ocon)
+@
+
+
+\end{document}

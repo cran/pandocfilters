@@ -19,4 +19,3 @@ In general table cells are a list of block elements, the
 \examples{
 TableCell("Cell 1")
 }
-

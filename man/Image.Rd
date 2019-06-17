@@ -16,7 +16,7 @@ Image(target, text, caption = "", attr = Attr())
 \item{attr}{an optional object of type \code{"Attr"}}
 }
 \description{
-A constructor of an inline object of type \code{"Image"}.
+Constructs an inline object of type \code{"Image"}.
 }
 \details{
 Further Usage examples can be found in the README.
@@ -24,4 +24,3 @@ Further Usage examples can be found in the README.
 \examples{
 Image("https:://Rlogo.jpg", "some_text", "fig:some_caption")
 }
-

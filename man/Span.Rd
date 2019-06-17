@@ -12,10 +12,9 @@ Span(attr, inline)
 \item{inline}{a inline object or a list of inline objects which will be shown}
 }
 \description{
-A constructor of an inline object of type \code{"Span"}.
+Constructs an inline object of type \code{"Span"}.
 }
 \examples{
 attr <- Attr("A", "B", list(c("C", "D")))
 Span(attr, "some inline string")
 }
-

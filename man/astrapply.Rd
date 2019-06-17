@@ -19,4 +19,3 @@ A list containing the modified AST.
 \description{
 Apply the function \code{FUN} on the abstract syntax tree (AST) obtained from pandoc.
 }
-

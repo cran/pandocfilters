@@ -10,9 +10,8 @@ Strong(x)
 \item{x}{a inline object or a list of inline objects}
 }
 \description{
-A constructor of an inline object of type \code{"Strong"}.
+Constructs an inline object of type \code{"Strong"}.
 }
 \examples{
 Strong("strong")
 }
-

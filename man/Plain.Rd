@@ -10,9 +10,8 @@ Plain(x)
 \item{x}{a inline object or list of inline objects}
 }
 \description{
-A constructor of a block object of type \code{"Plain"}.
+Constructs a block object of type \code{"Plain"}, a plain paragraph.
 }
 \examples{
 Plain("x")
 }
-
