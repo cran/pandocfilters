@@ -1,4 +1,4 @@
-## ----include=FALSE-------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 library(knitr)
 opts_chunk$set(tidy=FALSE, fig.width=8, fig.height=4)
 opts_knit$set(out.format = "latex")
@@ -6,13 +6,18 @@ theme_options <- knit_theme$get("edit-emacs")
 theme_options$background = "#f4f3ef"; 
 knit_theme$set(theme_options)
 
+## macOS and SunOS give a illegal seek error therefore I don't run the system2 command on this OS.
+## (and it also seems Fedora)
+pandoc_version <- tryCatch(system2("pandoc", "--version", stdout = TRUE, stderr = TRUE), error = identity)
+seek_pandoc <- is.character(pandoc_version)
+
 ## ----echo=FALSE, results='hide'--------------------------------
 options(width=65, prompt = "R> ", continue = "+  ", useFancyQuotes = FALSE)
 
 ## ----pandocfilters---------------------------------------------
 library("pandocfilters")
 
-## ----pandoc_version--------------------------------------------
+## ----pandoc_version, eval = seek_pandoc------------------------
 system2("pandoc", "--version", stdout = TRUE, stderr = TRUE)
 
 ## ----rprofile_unix, eval=FALSE---------------------------------
@@ -51,22 +56,22 @@ ex1_file <- system.file(package = "pandocfilters",
                         "examples", "lower_case.md")
 readLines(ex1_file)
 
-## ----ex1_setup_text_connections--------------------------------
-icon <- textConnection(pandoc_to_json(ex1_file))
-ocon <- textConnection("modified_ast", open = "w")
+## ----ex1_setup_text_connections, eval=FALSE--------------------
+#  icon <- textConnection(pandoc_to_json(ex1_file))
+#  ocon <- textConnection("modified_ast", open = "w")
 
 ## ----lower_function--------------------------------------------
 lower <- function(key, value, ...) {
     if (key == "Str") Str(tolower(value)) else NULL
 }
 
-## ----ex1_filter------------------------------------------------
-filter(lower, input = icon, output = ocon)
+## ----ex1_filter, eval=FALSE------------------------------------
+#  filter(lower, input = icon, output = ocon)
 
-## ----ex1_from_json---------------------------------------------
-pandoc_from_json(modified_ast, to ="markdown")
+## ----ex1_from_json, eval=FALSE---------------------------------
+#  pandoc_from_json(modified_ast, to ="markdown")
 
-## ----ex1_close_connnections------------------------------------
-close(icon)
-close(ocon)
+## ----ex1_close_connnections, eval=FALSE------------------------
+#  close(icon)
+#  close(ocon)
 

@@ -20,13 +20,18 @@
 \title{Introduction to the \pkg{pandocfilters} Package}
 
 
-<<include=FALSE>>=
+<<include = FALSE>>=
 library(knitr)
 opts_chunk$set(tidy=FALSE, fig.width=8, fig.height=4)
 opts_knit$set(out.format = "latex")
 theme_options <- knit_theme$get("edit-emacs")
 theme_options$background = "#f4f3ef"; 
 knit_theme$set(theme_options)
+
+## macOS and SunOS give a illegal seek error therefore I don't run the system2 command on this OS.
+## (and it also seems Fedora)
+pandoc_version <- tryCatch(system2("pandoc", "--version", stdout = TRUE, stderr = TRUE), error = identity)
+seek_pandoc <- is.character(pandoc_version)
 @
 
 \setkeys{Gin}{width=\textwidth}
@@ -64,7 +69,7 @@ and \proglang{macOS}.
 
 \section{Setup}
 If \pkg{pandoc} is set as PATH variable
-<<pandoc_version>>=
+<<pandoc_version, eval = seek_pandoc>>=
 system2("pandoc", "--version", stdout = TRUE, stderr = TRUE)
 @
 
@@ -250,7 +255,7 @@ instead.
 
 First we setup a read connection for the input and a write connection
 for the output.
-<<ex1_setup_text_connections>>=
+<<ex1_setup_text_connections, eval=FALSE>>=
 icon <- textConnection(pandoc_to_json(ex1_file))
 ocon <- textConnection("modified_ast", open = "w")
 @
@@ -263,17 +268,17 @@ lower <- function(key, value, ...) {
 @
 
 and apply it on the AST.
-<<ex1_filter>>=
+<<ex1_filter, eval=FALSE>>=
 filter(lower, input = icon, output = ocon)
 @
 
 At the end we convert altered AST back to markdown
-<<ex1_from_json>>=
+<<ex1_from_json, eval=FALSE>>=
 pandoc_from_json(modified_ast, to ="markdown")
 @
 
 and close the open connections.
-<<ex1_close_connnections>>=
+<<ex1_close_connnections, eval=FALSE>>=
 close(icon)
 close(ocon)
 @

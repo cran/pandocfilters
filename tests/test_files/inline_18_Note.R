@@ -14,10 +14,22 @@ test_that("Note", {
                    "<section class=\"footnotes\">", "<hr />", "<ol>",
                    "<li id=\"fn1\">x<a href=\"#fnref1\" class=\"footnoteBack\">↩</a></li>", "</ol>", "</section>",
                     sep = "\n")
-    } else {
+    } else if ( get_pandoc_version() < 2.7 ) {
         y <- paste("<h1><a href=\"#fn1\" class=\"footnote-ref\" id=\"fnref1\"><sup>1</sup></a></h1>",
                    "<section class=\"footnotes\">", "<hr />", "<ol>",
                    "<li id=\"fn1\">x<a href=\"#fnref1\" class=\"footnote-back\">↩</a></li>", "</ol>", "</section>",
+                    sep = "\n")
+    } else if ( get_pandoc_version() < 2.8 ) {
+        y <- paste("<h1><a href=\"#fn1\" class=\"footnote-ref\" id=\"fnref1\" role=\"doc-noteref\"><sup>1</sup></a></h1>",
+                   "<section class=\"footnotes\" role=\"doc-endnotes\">\n<hr />\n<ol>",
+                   "<li id=\"fn1\" role=\"doc-endnote\">x<a href=\"#fnref1\" class=\"footnote-back\" role=\"doc-backlink\">↩</a></li>", 
+                   "</ol>\n</section>",
+                    sep = "\n")
+    } else {
+        y <- paste("<h1><a href=\"#fn1\" class=\"footnote-ref\" id=\"fnref1\" role=\"doc-noteref\"><sup>1</sup></a></h1>", 
+                   "<section class=\"footnotes\" role=\"doc-endnotes\">\n<hr />\n<ol>", 
+                   "<li id=\"fn1\" role=\"doc-endnote\">x<a href=\"#fnref1\" class=\"footnote-back\" role=\"doc-backlink\">↩︎</a></li>", 
+                   "</ol>\n</section>",
                     sep = "\n")
     }
 
@@ -35,10 +47,22 @@ test_that("Note", {
                    "<section class=\"footnotes\">", "<hr />", "<ol>", 
                    "<li id=\"fn1\">x<a href=\"#fnref1\" class=\"footnoteBack\">↩</a></li>", "</ol>", "</section>",
                    sep = "\n")
-    } else {
+    } else if ( get_pandoc_version() < 2.7 ) {
         y <- paste("<a href=\"#fn1\" class=\"footnote-ref\" id=\"fnref1\"><sup>1</sup></a>", 
                    "<section class=\"footnotes\">", "<hr />", "<ol>", 
                    "<li id=\"fn1\">x<a href=\"#fnref1\" class=\"footnote-back\">↩</a></li>", "</ol>", "</section>",
+                   sep = "\n")
+    } else if ( get_pandoc_version() < 2.8 ) {
+        y <- paste("<a href=\"#fn1\" class=\"footnote-ref\" id=\"fnref1\" role=\"doc-noteref\"><sup>1</sup></a>",
+                   "<section class=\"footnotes\" role=\"doc-endnotes\">\n<hr />\n<ol>", 
+                   "<li id=\"fn1\" role=\"doc-endnote\">x<a href=\"#fnref1\" class=\"footnote-back\" role=\"doc-backlink\">↩</a></li>", 
+                   "</ol>\n</section>",
+                   sep = "\n")
+    } else {
+        y <- paste("<a href=\"#fn1\" class=\"footnote-ref\" id=\"fnref1\" role=\"doc-noteref\"><sup>1</sup></a>", 
+                   "<section class=\"footnotes\" role=\"doc-endnotes\">\n<hr />\n<ol>", 
+                   "<li id=\"fn1\" role=\"doc-endnote\">x<a href=\"#fnref1\" class=\"footnote-back\" role=\"doc-backlink\">↩︎</a></li>", 
+                   "</ol>\n</section>",
                    sep = "\n")
     }
 

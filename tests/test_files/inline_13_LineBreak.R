@@ -15,12 +15,12 @@ test_that("LineBreak", {
     x <- j(pandocfilters:::test(list(Header(inline))))
     expect_that(x, equals(y))
 
-    y <- j(c("<br />", ""))
+    y <- j("<br />")
     ## Test LineBreak with Plain
     x <- j(pandocfilters:::test(list(Plain(list(inline)))))
-    expect_that(x, equals(y))
+    expect_that(trimws(x), equals(y))
 
     x <- j(pandocfilters:::test(list(Plain(inline))))
-    expect_that(x, equals(y))
+    expect_that(trimws(x), equals(y))
 
 } )

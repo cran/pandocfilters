@@ -88,10 +88,12 @@ write.pandoc <- function(json, file, format, exchange = c("arg", "file")) {
 }
 
 to_pandoc_json <- function(x, meta = nlist()) {
-    if( get_pandoc_version() < 1.18 ) {
+    if ( get_pandoc_version() < 1.18 ) {
         z <- list(list(unMeta = meta), x)
-    } else {
+    } else if ( get_pandoc_version() < 2.8 ) {
         z <- list(blocks = x, `pandoc-api-version` = c(1, 17, 0), meta = meta)
+    } else {
+        z <- list(blocks = x, `pandoc-api-version` = c(1, 20), meta = meta)
     }
     jsonlite::toJSON(z, auto_unbox = TRUE)
 }
@@ -115,8 +117,8 @@ detect_pandoc_version <- function() {
 
 detect_pandoc_types_version <- function() {
     x <- sys_call(get_pandoc_path(), "--version")
-    x <- unlist(regmatches(x, gregexpr("pandoc-types\\s+\\d+\\.\\d+\\.\\d+", x)))
-    gsub("[[:alpha:] -]", "", x)
+    x <- unlist(regmatches(x, gregexpr("pandoc-types\\s+\\d+\\.\\d+(\\.\\d+|)", x)))
+    if ( length(x) ) gsub("[[:alpha:] -]", "", x) else NA_character_
 }
 
 get_pandoc <- function() {
@@ -136,7 +138,7 @@ get_pandoc <- function() {
 get_pandoc_version <- function(type = c("numeric", "character")) {
     type <- match.arg(type)
     version <- get_pandoc()$version
-    if ( is.na(version) ) {
+    if ( isTRUE(is.na(version)) ) {
         if ( type == "numeric" ) 0 else version
     } else {
         if ( type == "numeric" ) version_to_numeric(version) else version
@@ -156,7 +158,7 @@ get_pandoc_version <- function(type = c("numeric", "character")) {
 get_pandoc_types_version <- function(type = c("numeric", "character")) {
     type <- match.arg(type)
     version <- get_pandoc()$types_version
-    if ( is.na(version) ) {
+    if ( isTRUE(is.na(version)) ) {
       if ( type == "numeric" ) 0 else version
     } else {
       if ( type == "numeric" ) version_to_numeric(version) else version

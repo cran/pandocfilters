@@ -2,7 +2,11 @@ context("RawInline")
 
 test_that("RawInline", {
 
-    y <- c("some RawInline", "==============")
+    if ( get_pandoc_version() < 2.8 ) {
+        y <- c("some RawInline", "==============")
+    } else {
+        y <- c("`some RawInline`{=latex}", "========================")
+    }
     inline <- RawInline("latex", "some RawInline")
 
     ## Test Space with Header

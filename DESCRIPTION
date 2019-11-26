@@ -1,6 +1,6 @@
 Package: pandocfilters
 Title: Pandoc Filters for R
-Version: 0.1-3
+Version: 0.1-4
 Authors@R: c(person("Florian", "Schwendinger", 
                     role = c("aut", "cre"),
                     email = "FlorianSchwendinger@gmx.at"),
@@ -27,10 +27,10 @@ SystemRequirements: pandoc (> 1.12)
 License: GPL-3
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2019-06-17 10:53:25 UTC; florian
+Packaged: 2019-11-26 15:17:49 UTC; florian
 Author: Florian Schwendinger [aut, cre],
   Kurt Hornik [aut],
   Andrie de Vries [ctb]
 Maintainer: Florian Schwendinger <FlorianSchwendinger@gmx.at>
 Repository: CRAN
-Date/Publication: 2019-06-17 12:00:03 UTC
+Date/Publication: 2019-11-26 16:10:02 UTC
