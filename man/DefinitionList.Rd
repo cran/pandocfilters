@@ -14,7 +14,7 @@ the values are a list of lists of objects of type \code{"block"}.}
 Constructs a block object of type \code{"DefinitionList"}.
 }
 \details{
-In the pandoc API \url{http://johnmacfarlane.net/BayHac2014/doc/pandoc-types/Text-Pandoc-Definition.html} 
+In the pandoc API \url{https://johnmacfarlane.net/BayHac2014/doc/pandoc-types/Text-Pandoc-Definition.html} 
          the \code{DefinitionList} is described as follows, each list item is a pair consisting of a term 
          (a list of \code{"inline"} objects) and one or more definitions (each a list of blocks).
 }

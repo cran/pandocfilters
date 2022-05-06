@@ -4,8 +4,7 @@
 \alias{Code}
 \title{Inline Code}
 \usage{
-Code(code, name = "", language = NULL, line_numbers = FALSE,
-  start_from = 1)
+Code(code, name = "", language = NULL, line_numbers = FALSE, start_from = 1)
 }
 \arguments{
 \item{code}{a character string giving the inline code}

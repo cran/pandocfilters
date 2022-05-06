@@ -4,8 +4,13 @@
 \alias{Table}
 \title{Table}
 \usage{
-Table(rows, col_names = NULL, aligns = NULL, col_width = NULL,
-  caption = list())
+Table(
+  rows,
+  col_names = NULL,
+  aligns = NULL,
+  col_width = NULL,
+  caption = list()
+)
 }
 \arguments{
 \item{rows}{an object of class \code{"matrix"}, \code{"data.frame"}, \code{"table"} 

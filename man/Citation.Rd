@@ -4,8 +4,14 @@
 \alias{Citation}
 \title{Citation}
 \usage{
-Citation(suffix, id, note_num = 0L, mode = "AuthorInText",
-  prefix = list(), hash = 0L)
+Citation(
+  suffix,
+  id,
+  note_num = 0L,
+  mode = "AuthorInText",
+  prefix = list(),
+  hash = 0L
+)
 }
 \arguments{
 \item{suffix}{a inline object or list of inline objects}

@@ -12,67 +12,67 @@ Constructs an object of type \code{"document"}.
 \details{
 Each document has the following methods:
 \describe{
-  \item{}{\code{to_json()}
-     \describe{ 
-       \item{}{\emph{Description}}
-       \item{}{\describe{\item{}{Returns the \code{JSON} representation of the document.}}} 
-     }
-  }
-  \item{}{\code{write(con, format="markdown", writer=write.pandoc)}
+  \item{\eqn{\bullet}}{\code{to_json()}
      \describe{
-       \item{}{\emph{Description}}
-       \item{}{\describe{\item{}{Write the JSON-formatted AST to a connection.}}}
-       \item{}{\emph{Arguments}}
-       \item{}{\describe{\item{}{\code{con}    \sspace a connection object or a character string to which the document is written  }}}
-       \item{}{\describe{\item{}{\code{format} \sspace a character string giving the format (e.g. \code{"latex"}, \code{"html"})  }}}
-       \item{}{\describe{\item{}{\code{writer} \sspace an optional writer function, see \link{write.pandoc}}}}
-       \item{}{\emph{Note}}
-       \item{}{\describe{\item{}{Any function with the three arguments \code{x}, \code{con} and \code{format} can be used as writer function.}}}
+       \item{\sspace}{\emph{Description}}
+       \item{\sspace}{\describe{\item{\sspace}{Returns the \code{JSON} representation of the document.}}} 
      }
   }
-  \item{}{\code{append(x)}
+  \item{\eqn{\bullet}}{\code{write(con, format="markdown", writer=write.pandoc)}
+     \describe{
+       \item{\sspace}{\emph{Description}}
+       \item{\sspace}{\describe{\item{\sspace}{Write the JSON-formatted AST to a connection.}}}
+       \item{\sspace}{\emph{Arguments}}
+       \item{\sspace}{\describe{\item{\sspace}{\code{con}    \sspace a connection object or a character string to which the document is written  }}}
+       \item{\sspace}{\describe{\item{\sspace}{\code{format} \sspace a character string giving the format (e.g. \code{"latex"}, \code{"html"})  }}}
+       \item{\sspace}{\describe{\item{\sspace}{\code{writer} \sspace an optional writer function, see \link{write.pandoc}}}}
+       \item{\sspace}{\emph{Note}}
+       \item{\sspace}{\describe{\item{\sspace}{Any function with the three arguments \code{x}, \code{con} and \code{format} can be used as writer function.}}}
+     }
+  }
+  \item{\eqn{\bullet}}{\code{append(x)}
      \describe{ 
-       \item{}{\emph{Description}}
-       \item{}{\describe{\item{}{Append a new block to the document.}}}
-       \item{}{\emph{Arguments}}
-       \item{}{\describe{\item{}{\code{x} \sspace a block object or list of block objects}}}
+       \item{\sspace}{\emph{Description}}
+       \item{\sspace}{\describe{\item{\sspace}{Append a new block to the document.}}}
+       \item{\sspace}{\emph{Arguments}}
+       \item{\sspace}{\describe{\item{\sspace}{\code{x} \sspace a block object or list of block objects}}}
      }
   }
-  \item{}{\code{append_plain(x)} \sspace
-     \describe{\item{}{For more information about the arguments see \link{Plain}. }}
+  \item{\eqn{\bullet}}{\code{append_plain(x)} \sspace
+     \describe{\item{\sspace}{For more information about the arguments see \link{Plain}. }}
   }
-  \item{}{\code{append_para(x)} \sspace
-     \describe{\item{}{For more information about the arguments see \link{Para}.}}
+  \item{\eqn{\bullet}}{\code{append_para(x)} \sspace
+     \describe{\item{\sspace}{For more information about the arguments see \link{Para}.}}
   }
-  \item{}{\code{append_code_block(attr, code)} \sspace
-     \describe{\item{}{For more information about the arguments see \link{CodeBlock}.}}
+  \item{\eqn{\bullet}}{\code{append_code_block(attr, code)} \sspace
+     \describe{\item{\sspace}{For more information about the arguments see \link{CodeBlock}.}}
   }
-  \item{}{\code{append_block_quote(blocks)} \sspace
-     \describe{\item{}{For more information about the arguments see \link{BlockQuote}.}}
+  \item{\eqn{\bullet}}{\code{append_block_quote(blocks)} \sspace
+     \describe{\item{\sspace}{For more information about the arguments see \link{BlockQuote}.}}
   }
-  \item{}{\code{append_ordered_list(lattr, lblocks)} \sspace
-     \describe{\item{}{For more information about the arguments see \link{OrderedList}.}}
+  \item{\eqn{\bullet}}{\code{append_ordered_list(lattr, lblocks)} \sspace
+     \describe{\item{\sspace}{For more information about the arguments see \link{OrderedList}.}}
   }
-  \item{}{\code{append_bullet_list(lblocks)} \sspace
-     \describe{\item{}{For more information about the arguments see \link{BulletList}.}}
+  \item{\eqn{\bullet}}{\code{append_bullet_list(lblocks)} \sspace
+     \describe{\item{\sspace}{For more information about the arguments see \link{BulletList}.}}
   }
-  \item{}{\code{append_definition_list(x)} \sspace
-     \describe{\item{}{For more information about the arguments see \link{DefinitionList}.}}
+  \item{\eqn{\bullet}}{\code{append_definition_list(x)} \sspace
+     \describe{\item{\sspace}{For more information about the arguments see \link{DefinitionList}.}}
   }
-  \item{}{\code{append_header(x, level=1L, attr=Attr())} \sspace
-     \describe{\item{}{For more information about the arguments see \link{Header}.}}
+  \item{\eqn{\bullet}}{\code{append_header(x, level=1L, attr=Attr())} \sspace
+     \describe{\item{\sspace}{For more information about the arguments see \link{Header}.}}
   }
-  \item{}{\code{append_horizontal_rule()} \sspace
-     \describe{\item{}{For more information about the arguments see \link{HorizontalRule}.}}
+  \item{\eqn{\bullet}}{\code{append_horizontal_rule()} \sspace
+     \describe{\item{\sspace}{For more information about the arguments see \link{HorizontalRule}.}}
   }
-  \item{}{\code{append_table(rows, col_names=NULL, aligns=NULL, col_width=NULL, caption=list())} \sspace
-     \describe{\item{}{For more information about the arguments see \link{Table}.}}
+  \item{\eqn{\bullet}}{\code{append_table(rows, col_names=NULL, aligns=NULL, col_width=NULL, caption=list())} \sspace
+     \describe{\item{\sspace}{For more information about the arguments see \link{Table}.}}
   }
-  \item{}{\code{append_div(blocks, attr)} \sspace
-     \describe{\item{}{For more information about the arguments see \link{Div}.}}
+  \item{\eqn{\bullet}}{\code{append_div(blocks, attr)} \sspace
+     \describe{\item{\sspace}{For more information about the arguments see \link{Div}.}}
   }
-  \item{}{\code{append_null()} \sspace
-     \describe{\item{}{For more information about the arguments see \link{Null}.}}
+  \item{\eqn{\bullet}}{\code{append_null()} \sspace
+     \describe{\item{\sspace}{For more information about the arguments see \link{Null}.}}
   }
 }
 }

@@ -4,8 +4,11 @@
 \alias{ListAttributes}
 \title{ListAttributes}
 \usage{
-ListAttributes(first_number = 1L, style = "DefaultStyle",
-  delim = "DefaultDelim")
+ListAttributes(
+  first_number = 1L,
+  style = "DefaultStyle",
+  delim = "DefaultDelim"
+)
 }
 \arguments{
 \item{first_number}{an integer giving the first number of the list}

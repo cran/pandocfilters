@@ -1,0 +1,427 @@
+%\VignetteIndexEntry{Introduction to the pandocfilters Package}
+%\VignetteEncoding{UTF-8}
+%\VignettePackage{pandocfilters}
+%\VignetteEngine{knitr::knitr}
+
+\documentclass[a4paper]{article}\usepackage[]{graphicx}\usepackage[]{color}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0, 0, 0}
+\makeatletter
+\@ifundefined{AddToHook}{}{\AddToHook{package/xcolor/after}{\definecolor{fgcolor}{rgb}{0, 0, 0}}}
+\makeatother
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.741,0.553,0.545}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.675,0.125,0.125}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.612,0.125,0.933}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.125,0.537,0.125}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0,0,1}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\makeatletter
+\@ifundefined{AddToHook}{}{\AddToHook{package/xcolor/after}{
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+}}
+\makeatother
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage[utf8]{inputenc}
+\usepackage[colorlinks=true, citecolor=blue, linkcolor=red, urlcolor=red]{hyperref}
+\usepackage[round]{natbib}
+\usepackage{amsmath,amsfonts,amsthm,enumerate,bm}
+\usepackage{verbatim}
+\usepackage[left=2.8cm, right=2.8cm]{geometry}
+
+\setlength{\parindent}{0pt}
+
+\newcommand{\pkg}[1]{\textbf{#1}}
+\newcommand{\proglang}[1]{\textsf{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+
+\title{Introduction to the \pkg{pandocfilters} Package}
+
+
+
+
+\setkeys{Gin}{width=\textwidth}
+
+
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\sloppy
+\maketitle
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(}\hlstr{"pandocfilters"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'pandocfilters'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following object is masked from 'package:stats':\\\#\# \\\#\# \ \ \ \ filter}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following object is masked from 'package:methods':\\\#\# \\\#\# \ \ \ \ Math}}\end{kframe}
+\end{knitrout}
+
+The document converter \href{https://pandoc.org/}{pandoc} is widely used
+in the R community. One feature of pandoc is that it can produce and consume
+JSON-formatted abstract syntax trees (AST). This allows to transform a given
+source document into JSON-formatted AST, alter it by so called filters and pass
+the altered JSON-formatted AST back to pandoc. This package provides functions
+which allow to write such filters in native R code. The package is inspired by
+the Python package \href{https://github.com/jgm/pandocfilters/}{pandocfilters}.
+
+To alter the AST, the JSON representations of the data structures building the AST
+have to be replicated. For this purpose, \pkg{pandocfilters} provides a set of 
+constructors, with the goal to ease building / altering the AST.
+
+\section{Installation}
+Detailed information about installing pandoc, can be found at 
+\url{http://pandoc.org/installing.html}.
+For the new pandoc \href{https://github.com/jgm/pandoc/releases}{releases}
+there exist precompiled pandoc versions for \proglang{Linux}, \proglang{Windows}
+and \proglang{macOS}.
+
+\section{Setup}
+If \pkg{pandoc} is set as PATH variable
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{system2}\hlstd{(}\hlstr{"pandoc"}\hlstd{,} \hlstr{"--version"}\hlstd{,} \hlkwc{stdout} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{stderr} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "pandoc 2.9.2.1"                                                             
+## [2] "Compiled with pandoc-types 1.20, texmath 0.12.0.2, skylighting 0.8.5"       
+## [3] "Default user data directory: /home/f/.local/share/pandoc or /home/f/.pandoc"
+## [4] "Copyright (C) 2006-2020 John MacFarlane"                                    
+## [5] "Web:  https://pandoc.org"                                                   
+## [6] "This is free software; see the source for copying conditions."              
+## [7] "There is no warranty, not even for merchantability or fitness"              
+## [8] "for a particular purpose."
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+should show the version and some additional information.
+
+\subsection{Alter the pandoc version}
+There are several options to alter the pandoc version used by 
+\pkg{pandocfilters},
+\begin{enumerate}
+    \item alter your PATH variable accordingly
+    \item set the system variable \code{"PANDOC\_HOME"}
+    \item use \code{set\_pandoc\_path} after \pkg{pandocfilters} is loaded
+\end{enumerate}
+
+\subsubsection{Set the system variable \code{"PANDOC\_HOME"}}
+To set persistent environment variables either the file \code{".Renviron"}
+or the file \code{".Rprofile"} can be used. More information about
+\code{".Rprofile"} and \code{".Renviron"} can be found in the
+\href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/Startup.html}{R-Documentation}.
+Therefore a \code{".Renviron"} file on \proglang{Unix} could look like the following
+\begin{verbatim}
+PANDOC_HOME=/home/florian/bin/pandoc/pandoc_211/bin/pandoc
+\end{verbatim}
+or on \proglang{Windows}
+\begin{verbatim}
+PANDOC_HOME=C:/Users/Florian/AppData/Local/Pandoc/pandoc.exe
+\end{verbatim}
+similarly a \code{".Rprofile"} file on \proglang{Unix} could look like the following
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{Sys.setenv}\hlstd{(}\hlkwc{PANDOC_HOME}\hlstd{=}\hlstr{"/home/florian/bin/pandoc/pandoc_221/bin/pandoc"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+or on \proglang{Windows}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{Sys.setenv}\hlstd{(}\hlkwc{PANDOC_HOME}\hlstd{=}\hlstr{"C:/Users/Florian/AppData/Local/Pandoc/pandoc.exe"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{Use \code{set\_pandoc\_path}}
+After pandoc is loaded the used version can be altered by \code{set\_pandoc\_path}.
+%% replace this by the tex code to pass on winbuilder
+%%<<alter_pandoc_version>>=
+%%get_pandoc_version()
+%%set_pandoc_path("/home/florian/bin/pandoc/pandoc_221/bin/pandoc")
+%%get_pandoc_version()
+%%@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{get_pandoc_version}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## [1] 2.2
+\end{verbatim}
+\begin{alltt}
+\hlkwd{set_pandoc_path}\hlstd{(}\hlstr{"/home/florian/bin/pandoc/pandoc_221/bin/pandoc"}\hlstd{)}
+\hlkwd{get_pandoc_version}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## [1] 2.2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\section{Constructors}
+As mentioned before, constructors are used to replicate the pandoc AST in R.
+For this purpose, pandoc provides two basic types, \textbf{inline} elements and 
+\textbf{block} elements. An extensive list can be found below. \\
+
+To minimize the amount of unnecessary typing \pkg{pandocfilters} automatically 
+converts character strings to pandoc objects of type \code{"Str"} if needed.
+Furthermore, if a single inline object is provided where a list of inline 
+objects is needed \pkg{pandocfilters} automatically converts this inline 
+object into a list of inline objects. \\
+
+For example, the canonical way to emphasize the character string 
+\code{"some text"} would be 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{Emph}\hlstd{(}\hlkwd{list}\hlstd{(}\hlkwd{Str}\hlstd{(}\hlstr{"some text"}\hlstd{)))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Since single inline objects are automatically transformed to lists of inline 
+objects, this is equivalent to 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{Emph}\hlstd{(}\hlkwd{Str}\hlstd{(}\hlstr{"some text"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Since a character  string is automatically transformed to an inline object, 
+this is equivalent to 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{Emph}\hlstd{(}\hlstr{"some text"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+In short, whenever a list of inline objects is needed one can also use a 
+single inline object or a character string, and therefore the following 
+three code lines are equivalent.   
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{Emph}\hlstd{(}\hlkwd{list}\hlstd{(}\hlkwd{Str}\hlstd{(}\hlstr{"some text"}\hlstd{)))}
+\hlkwd{Emph}\hlstd{(}\hlkwd{Str}\hlstd{(}\hlstr{"some text"}\hlstd{))}
+\hlkwd{Emph}\hlstd{(}\hlstr{"some text"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Inline Elements}
+\begin{enumerate}
+    \item \code{Str(x)}
+    \item \code{Emph(x)}
+    \item \code{Strong(x)}
+    \item \code{Strikeout(x)}
+    \item \code{Superscript(x)}
+    \item \code{Subscript(x)}
+    \item \code{SmallCaps(x)}
+    \item \code{Quoted(x, quote\_type)}
+    \item \code{Cite(citation, x)}
+    \item \code{Code(code, name, language, line\_numbers, start\_from)}
+    \item \code{Space()}
+    \item \code{SoftBreak()}
+    \item \code{LineBreak()}
+    \item \code{Math(x)}
+    \item \code{RawInline(format, x)}
+    \item \code{Link(target, text, title, attr)}
+    \item \code{Image(target, text, caption, attr)}
+    \item \code{Span(attr, inline)}
+\end{enumerate}
+
+\subsection{Block Elements}
+\begin{enumerate}
+    \item \code{Plain(x)}
+    \item \code{Para(x)}
+    \item \code{CodeBlock(attr, code)}
+    \item \code{BlockQuote(blocks)}
+    \item \code{OrderedList(lattr, lblocks)}
+    \item \code{BulletList(lblocks)}
+    \item \code{DefinitionList(x)}
+    \item \code{Header(x, level, attr)}
+    \item \code{HorizontalRule()}
+    \item \code{Table(rows, col\_names, aligns, col\_width, caption)}
+    \item \code{Div(blocks, attr)}
+    \item \code{Null()}
+\end{enumerate}
+
+\subsection{Argument Constructors}
+\begin{enumerate}
+    \item \code{Attr(identifier, classes, key\_val\_pairs)}
+    \item \code{Citation(suffix, id, note\_num, mode, prefix, hash)}
+    \item \code{TableCell(x)}
+\end{enumerate}
+ 
+\newpage
+
+\section{Altering the AST}
+To read / write / alter the AST the following functions can be used.
+
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{pandoc_to_json}
+\end{alltt}
+\begin{verbatim}
+## function (file, from = "markdown")
+\end{verbatim}
+\begin{alltt}
+\hlstd{pandoc_from_json}
+\end{alltt}
+\begin{verbatim}
+## function (json, to = "markdown", exchange = c("file", "arg"))
+\end{verbatim}
+\begin{alltt}
+\hlstd{filter}
+\end{alltt}
+\begin{verbatim}
+## function (FUN, ..., input = stdin(), output = stdout())
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Examples}
+\subsubsection{Lower Case}
+
+In this example we take the first few lines from the 
+\href{https://cran.r-project.org/doc/FAQ/R-FAQ}{R-FAQ} Section ``\code{2.1 What is R?}''
+stored in the a markdown file \code{"lowe\_case.md"}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ex1_file} \hlkwb{<-} \hlkwd{system.file}\hlstd{(}\hlkwc{package} \hlstd{=} \hlstr{"pandocfilters"}\hlstd{,}
+                        \hlstr{"examples"}\hlstd{,} \hlstr{"lower_case.md"}\hlstd{)}
+\hlkwd{readLines}\hlstd{(ex1_file)}
+\end{alltt}
+\begin{verbatim}
+## [1] "## 2.1 What is R?"                                                         
+## [2] ""                                                                          
+## [3] "R is a system for statistical computation and graphics.  It consists of a" 
+## [4] "language plus a run-time environment with graphics, a debugger, access to" 
+## [5] "certain system functions, and the ability to run programs stored in script"
+## [6] "files."
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+and use \pkg{pandocfilters} to obtain the AST representation of this document.
+Since pandoc filters are typically used in the terminal the default
+input is the \code{stdin} and the default output is \code{stdout},
+however to stay within \proglang{R} we will use text connections
+instead. 
+
+First we setup a read connection for the input and a write connection
+for the output.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{icon} \hlkwb{<-} \hlkwd{textConnection}\hlstd{(}\hlkwd{pandoc_to_json}\hlstd{(ex1_file))}
+\hlstd{ocon} \hlkwb{<-} \hlkwd{textConnection}\hlstd{(}\hlstr{"modified_ast"}\hlstd{,} \hlkwc{open} \hlstd{=} \hlstr{"w"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Second we define a function to alter the AST
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{lower} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{key}\hlstd{,} \hlkwc{value}\hlstd{,} \hlkwc{...}\hlstd{) \{}
+    \hlkwa{if} \hlstd{(key} \hlopt{==} \hlstr{"Str"}\hlstd{)} \hlkwd{Str}\hlstd{(}\hlkwd{tolower}\hlstd{(value))} \hlkwa{else NULL}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+and apply it on the AST.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{filter}\hlstd{(lower,} \hlkwc{input} \hlstd{= icon,} \hlkwc{output} \hlstd{= ocon)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+At the end we convert altered AST back to markdown
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{pandoc_from_json}\hlstd{(modified_ast,} \hlkwc{to} \hlstd{=}\hlstr{"markdown"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+and close the open connections.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.957, 0.953, 0.937}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{close}\hlstd{(icon)}
+\hlkwd{close}\hlstd{(ocon)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\end{document}

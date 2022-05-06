@@ -91,7 +91,7 @@ or the file \code{".Rprofile"} can be used. More information about
 \href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/Startup.html}{R-Documentation}.
 Therefore a \code{".Renviron"} file on \proglang{Unix} could look like the following
 \begin{verbatim}
-PANDOC_HOME=/home/florian/bin/pandoc/pandoc_211/bin/pandoc
+PANDOC_HOME=/home/florian/bin/pandoc/pandoc_292/bin/pandoc
 \end{verbatim}
 or on \proglang{Windows}
 \begin{verbatim}
@@ -99,7 +99,7 @@ PANDOC_HOME=C:/Users/Florian/AppData/Local/Pandoc/pandoc.exe
 \end{verbatim}
 similarly a \code{".Rprofile"} file on \proglang{Unix} could look like the following
 <<rprofile_unix, eval=FALSE>>=
-Sys.setenv(PANDOC_HOME="/home/florian/bin/pandoc/pandoc_221/bin/pandoc")
+Sys.setenv(PANDOC_HOME="/home/florian/bin/pandoc/pandoc_292/bin/pandoc")
 @
 or on \proglang{Windows}
 <<rprofile_win, eval=FALSE>>=

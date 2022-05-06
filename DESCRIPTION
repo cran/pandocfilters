@@ -1,12 +1,12 @@
 Package: pandocfilters
 Title: Pandoc Filters for R
-Version: 0.1-4
+Version: 0.1-5
 Authors@R: c(person("Florian", "Schwendinger", 
                     role = c("aut", "cre"),
                     email = "FlorianSchwendinger@gmx.at"),
              person("Kurt", "Hornik", role = "aut"),
              person("Andrie", "de Vries", role = "ctb"))
-Description: The document converter 'pandoc' <http://pandoc.org/> is widely used
+Description: The document converter 'pandoc' <https://pandoc.org/> is widely used
     in the R community. One feature of 'pandoc' is that it can produce and consume
     JSON-formatted abstract syntax trees (AST). This allows to transform a given
     source document into JSON-formatted AST, alter it by so called filters and pass
@@ -16,21 +16,21 @@ Description: The document converter 'pandoc' <http://pandoc.org/> is widely used
     <https://github.com/jgm/pandocfilters/>, it provides additional convenience functions which make it simple to use the 'pandocfilters' package as a 
     report generator. Since 'pandocfilters' inherits most of it's functionality
     from 'pandoc' it can create documents in many formats 
-    (for more information see <http://pandoc.org/>) but is also bound to the same
+    (for more information see <https://pandoc.org/>) but is also bound to the same
     limitations as 'pandoc'.
-URL: http://pandoc.org/, https://github.com/jgm/pandocfilters/
+URL: https://pandoc.org/, https://github.com/jgm/pandocfilters/
 Depends: R (>= 3.0.0)
 Imports: jsonlite, utils
 Suggests: knitr
 VignetteBuilder: knitr
 SystemRequirements: pandoc (> 1.12)
 License: GPL-3
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.2
 NeedsCompilation: no
-Packaged: 2019-11-26 15:17:49 UTC; florian
+Packaged: 2022-05-05 19:50:00 UTC; f
 Author: Florian Schwendinger [aut, cre],
   Kurt Hornik [aut],
   Andrie de Vries [ctb]
 Maintainer: Florian Schwendinger <FlorianSchwendinger@gmx.at>
 Repository: CRAN
-Date/Publication: 2019-11-26 16:10:02 UTC
+Date/Publication: 2022-05-06 06:40:02 UTC
