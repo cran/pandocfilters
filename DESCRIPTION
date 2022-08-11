@@ -1,6 +1,6 @@
 Package: pandocfilters
 Title: Pandoc Filters for R
-Version: 0.1-5
+Version: 0.1-6
 Authors@R: c(person("Florian", "Schwendinger", 
                     role = c("aut", "cre"),
                     email = "FlorianSchwendinger@gmx.at"),
@@ -25,12 +25,12 @@ Suggests: knitr
 VignetteBuilder: knitr
 SystemRequirements: pandoc (> 1.12)
 License: GPL-3
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 NeedsCompilation: no
-Packaged: 2022-05-05 19:50:00 UTC; f
+Packaged: 2022-08-11 20:08:56 UTC; f
 Author: Florian Schwendinger [aut, cre],
   Kurt Hornik [aut],
   Andrie de Vries [ctb]
 Maintainer: Florian Schwendinger <FlorianSchwendinger@gmx.at>
 Repository: CRAN
-Date/Publication: 2022-05-06 06:40:02 UTC
+Date/Publication: 2022-08-11 21:40:02 UTC

@@ -1,9 +1,9 @@
-09521fa5f6a92d40332ffd4c923b5e7e *DESCRIPTION
+18ec5aff567e36c4fbbc71617a2ebd23 *DESCRIPTION
 758fa5fde7716fe82238d121803cd93f *NAMESPACE
-75ed73d0ac059a39392e3eb2c38ea40b *R/pandocfilters.R
+c2fadf6ba14842d642fdeebce8caa38a *R/pandocfilters.R
 0d4c9a7606cef81469cb8b28fc34e50e *R/utility.R
 fad1e8e42382ff61eca83a9682ed144c *R/zzz.R
-92a60de986ee365df88739dcd0d82679 *build/vignette.rds
+de345411e2ec32a6d4a2b38c5378678b *build/vignette.rds
 b867678f07173296c46d896c05a0d56b *inst/doc/pandocfilters.R
 890915cb611b87ad3f47c8f13a23b1e8 *inst/doc/pandocfilters.Rnw
 bbd6445018aaa78bd441f66183a2fcca *inst/doc/pandocfilters.pdf
@@ -49,7 +49,7 @@ d6348fb7c5659403f83e364141057fe5 *man/TableCell.Rd
 40f530c7c901e517f8b0112fc377a5bf *man/astrapply.Rd
 0997425a7654b44aec849fd420097b6a *man/c.block.Rd
 e22b70f29eedfe31a1b70d947d9533ef *man/c.inline.Rd
-6fcc4bf8c93ecdc5a690e09a2a49f1ca *man/document.Rd
+b50a9bf4ebfd7052db136d8fb596b62c *man/document.Rd
 93ca30d32363a811eac40772ea050712 *man/filter.Rd
 7dd22109b2913ef7e6f549928e0b1712 *man/get_pandoc_path.Rd
 9701c77b8daf2f022f0ac62e2d3f4143 *man/get_pandoc_types_version.Rd

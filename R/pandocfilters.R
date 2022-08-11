@@ -103,75 +103,31 @@ astrapply <- function(x, FUN, ...) {
 #' @title Create a new Document
 #' @description Constructs an object of type \code{"document"}.
 #' @details Each document has the following methods:
-#' \describe{
-#'   \item{\eqn{\bullet}}{\code{to_json()}
-#'      \describe{
-#'        \item{\sspace}{\emph{Description}}
-#'        \item{\sspace}{\describe{\item{\sspace}{Returns the \code{JSON} representation of the document.}}} 
-#'      }
-#'   }
-#'   \item{\eqn{\bullet}}{\code{write(con, format="markdown", writer=write.pandoc)}
-#'      \describe{
-#'        \item{\sspace}{\emph{Description}}
-#'        \item{\sspace}{\describe{\item{\sspace}{Write the JSON-formatted AST to a connection.}}}
-#'        \item{\sspace}{\emph{Arguments}}
-#'        \item{\sspace}{\describe{\item{\sspace}{\code{con}    \sspace a connection object or a character string to which the document is written  }}}
-#'        \item{\sspace}{\describe{\item{\sspace}{\code{format} \sspace a character string giving the format (e.g. \code{"latex"}, \code{"html"})  }}}
-#'        \item{\sspace}{\describe{\item{\sspace}{\code{writer} \sspace an optional writer function, see \link{write.pandoc}}}}
-#'        \item{\sspace}{\emph{Note}}
-#'        \item{\sspace}{\describe{\item{\sspace}{Any function with the three arguments \code{x}, \code{con} and \code{format} can be used as writer function.}}}
-#'      }
-#'   }
-#'   \item{\eqn{\bullet}}{\code{append(x)}
-#'      \describe{ 
-#'        \item{\sspace}{\emph{Description}}
-#'        \item{\sspace}{\describe{\item{\sspace}{Append a new block to the document.}}}
-#'        \item{\sspace}{\emph{Arguments}}
-#'        \item{\sspace}{\describe{\item{\sspace}{\code{x} \sspace a block object or list of block objects}}}
-#'      }
-#'   }
-#'   \item{\eqn{\bullet}}{\code{append_plain(x)} \sspace
-#'      \describe{\item{\sspace}{For more information about the arguments see \link{Plain}. }}
-#'   }
-#'   \item{\eqn{\bullet}}{\code{append_para(x)} \sspace
-#'      \describe{\item{\sspace}{For more information about the arguments see \link{Para}.}}
-#'   }
-#'   \item{\eqn{\bullet}}{\code{append_code_block(attr, code)} \sspace
-#'      \describe{\item{\sspace}{For more information about the arguments see \link{CodeBlock}.}}
-#'   }
-#'   \item{\eqn{\bullet}}{\code{append_block_quote(blocks)} \sspace
-#'      \describe{\item{\sspace}{For more information about the arguments see \link{BlockQuote}.}}
-#'   }
-#'   \item{\eqn{\bullet}}{\code{append_ordered_list(lattr, lblocks)} \sspace
-#'      \describe{\item{\sspace}{For more information about the arguments see \link{OrderedList}.}}
-#'   }
-#'   \item{\eqn{\bullet}}{\code{append_bullet_list(lblocks)} \sspace
-#'      \describe{\item{\sspace}{For more information about the arguments see \link{BulletList}.}}
-#'   }
-#'   \item{\eqn{\bullet}}{\code{append_definition_list(x)} \sspace
-#'      \describe{\item{\sspace}{For more information about the arguments see \link{DefinitionList}.}}
-#'   }
-#'   \item{\eqn{\bullet}}{\code{append_header(x, level=1L, attr=Attr())} \sspace
-#'      \describe{\item{\sspace}{For more information about the arguments see \link{Header}.}}
-#'   }
-#'   \item{\eqn{\bullet}}{\code{append_horizontal_rule()} \sspace
-#'      \describe{\item{\sspace}{For more information about the arguments see \link{HorizontalRule}.}}
-#'   }
-#'   \item{\eqn{\bullet}}{\code{append_table(rows, col_names=NULL, aligns=NULL, col_width=NULL, caption=list())} \sspace
-#'      \describe{\item{\sspace}{For more information about the arguments see \link{Table}.}}
-#'   }
-#'   \item{\eqn{\bullet}}{\code{append_div(blocks, attr)} \sspace
-#'      \describe{\item{\sspace}{For more information about the arguments see \link{Div}.}}
-#'   }
-#'   \item{\eqn{\bullet}}{\code{append_null()} \sspace
-#'      \describe{\item{\sspace}{For more information about the arguments see \link{Null}.}}
-#'   }
-#' }
+#'
+#' @section \code{to_json()}:
+#' @description
+#'  \emph{Description}
+#'  Returns the \code{JSON} representation of the document.
+#' @section \code{write(con, format = "markdown", writer = write.pandoc)}
+#' @section \code{append(x)}
+#' @section \code{append_plain(x)}
+#' @section \code{append_para(x)}
+#' @section \code{append_code_block(attr, code)}
+#' @section \code{append_block_quote(blocks)}
+#' @section \code{append_ordered_list(lattr, lblocks)}
+#' @section \code{append_bullet_list(lblocks)}
+#' @section \code{append_definition_list(x)}
+#' @section \code{append_header(x, level=1L, attr=Attr())}
+#' @section \code{append_horizontal_rule()}
+#' @section \code{append_table(rows, col_names=NULL, aligns=NULL, col_width=NULL, caption=list())}
+#' @section \code{append_div(blocks, attr)}
+#' @section \code{append_null()}
+#' 
 #' @export
 #  -----------------------------------------------------------
 document <- function() {
     env <- new.env()
-    env$doc <- list()
+    env$doc <- list() 
     env$meta <- nlist()
     env$append <- function(x) {
         self <- parent.env(environment())$env
